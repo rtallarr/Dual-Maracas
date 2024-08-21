@@ -77,9 +77,7 @@ export class BlockListTableComponent implements AfterViewInit{
   onSkipTask(id: any) {
     const task = this.Tasks.find(task => task.id === id);
     if (task) {
-      if (task.status === 'Blocked') {
-        this._snackBar.open('Cannot skip a task that is not active', 'Close', )
-      } else if (task.status === 'Skip') {
+      if (task.status === 'Skip') {
         task.status = 'Active';
         task.chance = this.calculateChance(task.weight);
         this.currentWeight += task.weight;
@@ -87,7 +85,7 @@ export class BlockListTableComponent implements AfterViewInit{
         this.recalculateChances();
         this.calculatePoints();
         this.calculateSkipPercentage();
-      } else {
+      } else if (task.status === 'Active') {
         task.status = 'Skip';
         task.chance = 0;
         this.currentWeight -= task.weight;
@@ -95,6 +93,8 @@ export class BlockListTableComponent implements AfterViewInit{
         this.recalculateChances();
         this.calculatePoints();
         this.calculateSkipPercentage();
+      } else {
+        this._snackBar.open('Cannot skip a task that is not active', 'Close', )
       }
     } else {
       console.error('Task with id: '+ id + 'not found');
