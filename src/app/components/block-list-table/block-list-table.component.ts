@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, Input, inject } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, inject, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { TaskData } from '../../views/block-list/block-list.component';
 
 @Component({
@@ -33,12 +34,9 @@ export class BlockListTableComponent implements AfterViewInit{
   percentageSkipped: number = 0;
 
   displayedColumns: string[] = ['name', 'weight', 'chance', 'status', 'actions'];
-  dataSource: MatTableDataSource<TaskData>;
+  dataSource!: MatTableDataSource<TaskData>;
 
-  constructor() {
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.Tasks);
-  }
+  constructor(private cdref: ChangeDetectorRef) { }
 
   print() {
     console.log('Tasks: ', this.Tasks);
@@ -46,17 +44,14 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   // Reload with data from parent component
-  ngOnChanges() {
-    this.averagePointsSkip = this.averagePoints;
-    this.print();
-  }
-
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
     this.dataSource = new MatTableDataSource(this.Tasks);
+    this.dataSource.sort = this.sort;
     this.totalWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0);
     this.currentWeight = this.totalWeight;
+    this.averagePointsSkip = this.averagePoints;
     this.recalculateChances();
+    this.cdref.detectChanges();
   }
 
   applyFilter(event: Event) {
