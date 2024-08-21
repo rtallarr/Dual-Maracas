@@ -11,10 +11,14 @@ td, th {
     width: 25%;
 }
 
-.example-button-container {
+.icon-button-container {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     width: 120px;
+}
+
+.icon-button {
+    margin: 5px;
 }
 
 .bottom-card-container {
