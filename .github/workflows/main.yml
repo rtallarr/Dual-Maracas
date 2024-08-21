@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run build --base-href=/Bob-angular
 
       - name: Deploy to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
