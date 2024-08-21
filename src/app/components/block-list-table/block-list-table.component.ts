@@ -9,13 +9,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TaskData } from '../../views/block-list/block-list.component';
 
 @Component({
   selector: 'app-block-list-table',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, MatButtonModule, MatCardModule, MatDividerModule],
+  imports: [
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatTableModule, 
+    MatSortModule, 
+    MatPaginatorModule, 
+    MatIconModule, 
+    MatButtonModule, 
+    MatCardModule, 
+    MatDividerModule, 
+    MatTooltipModule],
   templateUrl: './block-list-table.component.html',
   styleUrl: './block-list-table.component.css'
 })
