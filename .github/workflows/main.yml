@@ -28,12 +28,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Github Pages
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          target_branch: gh-pages
-          build_dir: dist/tz-tok-bob
-          keep_history: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          branch: gh-pages
+          folder: dist/tz-tok-bob/browser
+          token: ${{ secrets.TOKEN }}
           
