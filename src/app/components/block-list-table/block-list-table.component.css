@@ -16,3 +16,15 @@ td, th {
     justify-content: center;
     width: 120px;
 }
+
+.bottom-card-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    width: 75%;
+}
+
+.bottom-card {
+    justify-content: center;
+    margin: 10px;
+}

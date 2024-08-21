@@ -2,11 +2,15 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: 'table',
+        loadComponent: () => import('./components/block-list-table/block-list-table.component').then(m => m.BlockListTableComponent)
+    },
+    {
         path: 'blocklist',
-        loadComponent: () => import('./slayer/block-list/block-list.component').then(m => m.BlockListComponent)
+        loadComponent: () => import('./views/block-list/block-list.component').then(m => m.BlockListComponent)
     },
     { 
         path: '**',
-        loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./views/home/home.component').then(m => m.HomeComponent)
     }
 ];
