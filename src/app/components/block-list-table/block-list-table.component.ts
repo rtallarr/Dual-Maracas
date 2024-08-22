@@ -38,6 +38,7 @@ export class BlockListTableComponent implements AfterViewInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  lockedWeight: number = 0; //weight of locked tasks
   totalWeight: number = 0; //weight after blocking tasks
   currentWeight: number = 0; //weight after skipping tasks
   averagePointsSkip: number = 0; 
@@ -58,7 +59,8 @@ export class BlockListTableComponent implements AfterViewInit{
   ngAfterViewInit() {
     this.dataSource = new MatTableDataSource(this.Tasks);
     this.dataSource.sort = this.sort;
-    this.totalWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0);
+    this.lockedWeight = this.Tasks.filter(task => task.status === 'Locked').reduce((acc, task) => acc + task.weight, 0);
+    this.totalWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0) - this.lockedWeight;
     this.currentWeight = this.totalWeight;
     this.averagePointsSkip = this.averagePoints;
     this.recalculateChances();
