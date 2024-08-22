@@ -106,7 +106,6 @@ export class BlockListTableComponent implements AfterViewInit{
     if (task) {
       if (task.status === 'Active') {
         task.status = 'Blocked';
-        task.chance = 0;
         this.currentWeight -= task.weight;
         this.totalWeight -= task.weight;
       } else if (task.status === 'Blocked') {
@@ -124,13 +123,15 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   calculateChance(weight: number) {
-    return parseFloat((weight / this.currentWeight * 100).toFixed(2));
+    return parseFloat(((weight / this.currentWeight) * 100).toFixed(2));
   }
 
   recalculateChances() {
     this.Tasks.forEach(task => {
-      if (task.status != 'Blocked' && task.status != 'Skip') {
+      if (task.status === 'Active') {
         task.chance = this.calculateChance(task.weight);
+      } else {
+        task.chance = 0;
       }
     });
   }
