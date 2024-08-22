@@ -49,7 +49,7 @@ export class BlockListComponent {
     {id: '25', name: 'Iron dragons', status: 'Active', weight: 5},
     {id: '26', name: 'Kalphites', status: 'Active', weight: 9},
     {id: '27', name: 'Kurasks', status: 'Active', weight: 4},
-    {id: '28', name: 'Lizardmen', status: 'Active', weight: 10},
+    {id: '28', name: 'Lizardmen', status: 'Locked', weight: 10},
     {id: '29', name: 'Mithril dragons', status: 'Locked', weight: 9},
     {id: '30', name: 'Mutated Zygomites', status: 'Active', weight: 2},
     {id: '31', name: 'Nechryael', status: 'Active', weight: 9},
