@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, Input, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -10,8 +10,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { TaskData } from '../../views/block-list/block-list.component';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-block-list-table',
@@ -26,9 +30,14 @@ import { TaskData } from '../../views/block-list/block-list.component';
     MatButtonModule, 
     MatCardModule, 
     MatDividerModule, 
-    MatTooltipModule],
+    MatTooltipModule,
+    MatButtonToggleModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './block-list-table.component.html',
-  styleUrl: './block-list-table.component.css'
+  styleUrl: './block-list-table.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlockListTableComponent implements AfterViewInit{
   private _snackBar = inject(MatSnackBar);
@@ -39,31 +48,28 @@ export class BlockListTableComponent implements AfterViewInit{
   @ViewChild(MatSort) sort!: MatSort;
 
   lockedWeight: number = 0; //weight of locked tasks
-  totalWeight: number = 0; //weight after blocking tasks
-  currentWeight: number = 0; //weight after skipping tasks
+  activeWeight: number = 0; //weight remaining after blocking tasks
+  currentWeight: number = 0; //weight remaining after skipping tasks
   averagePointsSkip: number = 0; 
   countSkipTasks: number = 0;
   percentageSkipped: number = 0;
 
-  displayedColumns: string[] = ['name', 'weight', 'chance', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'weight', 'chance', 'status'];
   dataSource!: MatTableDataSource<TaskData>;
 
-  constructor(private cdref: ChangeDetectorRef) { }
+  statusControl = new FormControl('Active');
 
-  print() {
-    console.log('Tasks: ', this.Tasks);
-    console.log('Total weight: ' + this.totalWeight, 'Average points: ' + this.averagePoints);
-  }
+  constructor(private cdref: ChangeDetectorRef) { }
 
   // Reload with data from parent component
   ngAfterViewInit() {
     this.dataSource = new MatTableDataSource(this.Tasks);
     this.dataSource.sort = this.sort;
-    this.lockedWeight = this.Tasks.filter(task => task.status === 'Locked').reduce((acc, task) => acc + task.weight, 0);
-    this.totalWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0) - this.lockedWeight;
-    this.currentWeight = this.totalWeight;
+    //this.lockedWeight = this.Tasks.filter(task => task.status === 'Locked').reduce((acc, task) => acc + task.weight, 0);
+    this.activeWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0); //- this.lockedWeight
+    this.currentWeight = this.activeWeight;
     this.averagePointsSkip = this.averagePoints;
-    this.recalculateChances();
+    this.recalculateChances(true);
     this.cdref.detectChanges();
   }
 
@@ -76,59 +82,75 @@ export class BlockListTableComponent implements AfterViewInit{
     }
   }
 
-  onSkipTask(id: any) {
-    const task = this.Tasks.find(task => task.id === id);
-    if (task) {
-      if (task.status === 'Skip') {
-        task.status = 'Active';
-        task.chance = this.calculateChance(task.weight);
+  onChangeStatus(task: TaskData, newStatus: any) {
+    if (newStatus.value === 'Active') {
+      if (task.status === 'Blocked') {
+        this.activeWeight += task.weight
+        this.currentWeight += task.weight;
+      } else if (task.status === 'Skip') {
         this.currentWeight += task.weight;
         this.countSkipTasks--;
-        this.recalculateChances();
-        this.calculatePoints();
-        this.calculateSkipPercentage();
-      } else if (task.status === 'Active') {
-        task.status = 'Skip';
-        task.chance = 0;
-        this.currentWeight -= task.weight;
-        this.countSkipTasks++;
-        this.recalculateChances();
-        this.calculatePoints();
-        this.calculateSkipPercentage();
-      } else {
-        this._snackBar.open('Cannot skip a task that is not active', 'Close', )
+      } else if (task.status === 'Locked') {
+        this.activeWeight += task.weight;
+        this.currentWeight += task.weight;
+        this.lockedWeight -= task.weight;
       }
+      task.status = 'Active';
+    } else if (newStatus.value === 'Blocked') {
+      if (task.status === 'Active') {
+        this.currentWeight -= task.weight;
+        this.activeWeight -= task.weight;
+      } else if (task.status === 'Locked') {
+        this.lockedWeight -= task.weight;
+      } else if (task.status === 'Skip') {
+        this.activeWeight -= task.weight;
+        this.countSkipTasks--;
+      }
+      task.status = 'Blocked';
+    } else if (newStatus.value === 'Skip') {
+      if (task.status === 'Active') {
+        this.currentWeight -= task.weight;
+      } else if (task.status === 'Blocked') {
+        this.activeWeight += task.weight;
+      } else if (task.status === 'Locked') {
+        this.activeWeight += task.weight;
+        this.lockedWeight -= task.weight;
+      }
+      this.countSkipTasks++;
+      task.status = 'Skip';
+    } else if (newStatus.value === 'Locked') {
+      if (task.status === 'Active') {
+        this.activeWeight -= task.weight;
+        this.currentWeight -= task.weight;
+      } else if (task.status === 'Skip') {
+        this.activeWeight -= task.weight;
+        this.countSkipTasks--;
+      }
+      this.lockedWeight += task.weight;
+      task.status = 'Locked';
     } else {
-      console.error('Task with id: '+ id + 'not found');
+      console.error('Invalid status');
     }
+    this.recalculateChances();
+    this.calculatePoints();
+    this.calculateSkipPercentage();
+    this.printWeight();
   }
 
-  onBlockTask(id: any) {
-    const task = this.Tasks.find(task => task.id === id);
-    if (task) {
-      if (task.status === 'Active') {
-        task.status = 'Blocked';
-        this.currentWeight -= task.weight;
-        this.totalWeight -= task.weight;
-      } else if (task.status === 'Blocked') {
-        task.status = 'Active';
-        this.currentWeight += task.weight;
-        this.totalWeight += task.weight;
-      } else {
-        this._snackBar.open('Cannot block a task that is skipped', 'Close', )
-      }
-      this.recalculateChances();
-      this.calculatePoints();
-    } else {
-      console.error('Task with id: '+ id + 'not found');
-    }
+  printWeight() {
+    console.log('Active Weight: ' + this.activeWeight, 'Current Weight: ' + this.currentWeight, 'Locked Weight: ' + this.lockedWeight);
   }
 
   calculateChance(weight: number) {
     return parseFloat(((weight / this.currentWeight) * 100).toFixed(2));
   }
 
-  recalculateChances() {
+  recalculateChances(first: boolean = false) {
+    if (first) {
+      this.Tasks.forEach(task => {
+        task.status = 'Active';
+      });
+    }
     this.Tasks.forEach(task => {
       if (task.status === 'Active') {
         task.chance = this.calculateChance(task.weight);
@@ -139,7 +161,8 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   calculatePoints() {
-    this.averagePointsSkip = ((this.averagePoints*this.currentWeight) - 30*(this.totalWeight-this.currentWeight))/this.currentWeight;
+    this.averagePointsSkip = ((this.averagePoints*this.currentWeight) - 30*(this.activeWeight-this.currentWeight))/this.currentWeight;
+    this.averagePointsSkip = parseFloat(this.averagePointsSkip.toFixed(3));
   }
 
   calculateSkipPercentage() {
