@@ -37,7 +37,12 @@
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let row">
-                {{row.status}} 
+                <mat-button-toggle-group [formControl]="statusControl" (change)="onChangeStatus(row, $event)">
+                    <mat-button-toggle value="Active">Active</mat-button-toggle>
+                    <mat-button-toggle value="Blocked">Blocked</mat-button-toggle>
+                    <mat-button-toggle value="Locked">Locked</mat-button-toggle>
+                    <mat-button-toggle value="Skip">Skip</mat-button-toggle>
+                </mat-button-toggle-group>
             </td>
         </ng-container>
 
@@ -57,21 +62,6 @@
         <ng-container matColumnDef="chance">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Chance of assignment </th>
             <td mat-cell *matCellDef="let row"> {{row.chance}} % </td>
-        </ng-container>
-
-        <!-- actions Column -->
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let row">
-                <div class="icon-button-container">
-                    <button mat-mini-fab (click)="onBlockTask(row.id)" class="icon-button">
-                        <mat-icon>block</mat-icon>
-                    </button>
-                    <button mat-mini-fab (click)="onSkipTask(row.id)" class="icon-button">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </div>
-            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
