@@ -17,6 +17,52 @@
 </mat-card>
 
 <!-- ask for slayer lvl and quests here -->
+<mat-card class="example-result-card" [formGroup]="reqsForm">
+	<mat-card-content>
+		<mat-card class="reqs-inner-card">
+			<mat-card-content>
+				<h2>Result</h2>
+		
+				<div class="example-label-container">
+					<label id="example-name-label" class="example-name-label">Slayer Level</label>
+					<label class="example-value-label">{{slayerLvlSlider.value}}</label>
+				</div>
+				<mat-slider
+					class="example-margin"
+					max="99"
+					min="1"
+					step="1"
+					discrete="false"
+					showTickMarks="false"
+					(mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
+					>
+				<input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
+				</mat-slider>
+			</mat-card-content>
+		</mat-card>
+		<mat-card class="reqs-inner-card">
+			<mat-card-content>
+				<h2>Result</h2>
+		
+				<div class="example-label-container">
+					<label id="example-name-label" class="example-name-label">Combat Level</label>
+					<label class="example-value-label">{{combatLvlSlider.value}}</label>
+				</div>
+				<mat-slider
+					class="example-margin"
+					max="126"
+					min="3"
+					step="1"
+					discrete="false"
+					showTickMarks="false"
+					(mouseup)="onSetCombatLvl(combatLvlSlider.value)"
+					>
+				<input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
+				</mat-slider>
+			</mat-card-content>
+		</mat-card>
+	</mat-card-content>
+</mat-card>
 
 <mat-divider></mat-divider>
 
