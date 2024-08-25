@@ -134,7 +134,7 @@ export class BlockListTableComponent implements AfterViewInit{
     this.recalculateChances();
     this.calculatePoints();
     this.calculateSkipPercentage();
-    this.printWeight();
+    //this.printWeight();
   }
 
   printWeight() {
@@ -166,7 +166,7 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   calculateSkipPercentage() {
-    return this.percentageSkipped = (this.countSkipTasks / this.Tasks.length) * 100;
+    return this.percentageSkipped = parseFloat(((this.countSkipTasks / this.Tasks.length) * 100).toFixed(2));
   }
 
 }
