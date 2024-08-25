@@ -11,11 +11,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { TaskData } from '../../views/block-list/block-list.component';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-block-list-table',
@@ -34,6 +33,7 @@ import { from } from 'rxjs';
     MatButtonToggleModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSliderModule,
   ],
   templateUrl: './block-list-table.component.html',
   styleUrl: './block-list-table.component.css',
@@ -41,6 +41,7 @@ import { from } from 'rxjs';
 })
 export class BlockListTableComponent implements AfterViewInit{
   private _snackBar = inject(MatSnackBar);
+  private readonly fb = inject(FormBuilder);
 
   @Input() Tasks: TaskData[] = [];
   @Input() averagePoints: number = 0;
@@ -58,6 +59,12 @@ export class BlockListTableComponent implements AfterViewInit{
   dataSource!: MatTableDataSource<TaskData>;
 
   statusControl = new FormControl('Active');
+
+  reqsForm = this.fb.group({
+    //define a field with a number type
+    slayerLvl: [1],
+    combatLvl: [1],
+  });
 
   constructor(private cdref: ChangeDetectorRef) { }
 
@@ -167,6 +174,20 @@ export class BlockListTableComponent implements AfterViewInit{
 
   calculateSkipPercentage() {
     return this.percentageSkipped = parseFloat(((this.countSkipTasks / this.Tasks.length) * 100).toFixed(2));
+  }
+
+  onSetSlayerLvl(Lvl: string) {
+    this.Tasks.forEach(task => {
+      if (task.slayer && task.slayer > parseFloat(Lvl)) {
+        task.status = 'Locked';
+      }
+    });
+    //console.log(this.Tasks);
+    //console.log('Slayer Lvl: ' + this.reqsForm.get('slayerLvl')?.value);
+  }
+
+  onSetCombatLvl(Lvl: string) {
+    console.log('Combat Lvl: ' + this.reqsForm.get('combatLvl')?.value);
   }
 
 }
