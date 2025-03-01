@@ -55,9 +55,12 @@ export class BlockListTableComponent implements AfterViewInit{
   countSkipTasks: number = 0;
   percentageSkipped: number = 0;
 
+  userCombatLvl: number = 3;
+  userSlayerLvl: number = 1;
+
   displayedColumns: string[] = ['name', 'weight', 'chance', 'status'];
   dataSource!: MatTableDataSource<TaskData>;
-
+	
   statusControl = new FormControl('Active');
 
   reqsForm = this.fb.group({
@@ -70,14 +73,17 @@ export class BlockListTableComponent implements AfterViewInit{
 
   // Reload with data from parent component
   ngAfterViewInit() {
+		this.Tasks = this.Tasks.map(task => ({
+      ...task,
+      statusControl: new FormControl(task.status)
+    }));
     this.dataSource = new MatTableDataSource(this.Tasks);
     this.dataSource.sort = this.sort;
-    //this.lockedWeight = this.Tasks.filter(task => task.status === 'Locked').reduce((acc, task) => acc + task.weight, 0);
+    //this.lockedWeight = this.Tasks.filter(task => task.statusControl?.value === 'Locked').reduce((acc, task) => acc + task.weight, 0);
     this.activeWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0); //- this.lockedWeight
     this.currentWeight = this.activeWeight;
     this.averagePointsSkip = this.averagePoints;
-    this.recalculateChances(true);
-    this.cdref.detectChanges();
+    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
   applyFilter(event: Event) {
@@ -91,54 +97,55 @@ export class BlockListTableComponent implements AfterViewInit{
 
   onChangeStatus(task: TaskData, newStatus: any) {
     if (newStatus.value === 'Active') {
-      if (task.status === 'Blocked') {
+      if (task.statusControl?.value === 'Blocked') {
         this.activeWeight += task.weight
         this.currentWeight += task.weight;
-      } else if (task.status === 'Skip') {
+      } else if (task.statusControl?.value === 'Skip') {
         this.currentWeight += task.weight;
         this.countSkipTasks--;
-      } else if (task.status === 'Locked') {
+      } else if (task.statusControl?.value === 'Locked') {
         this.activeWeight += task.weight;
         this.currentWeight += task.weight;
         this.lockedWeight -= task.weight;
       }
-      task.status = 'Active';
+      task.statusControl?.setValue('Active');
     } else if (newStatus.value === 'Blocked') {
-      if (task.status === 'Active') {
+      if (task.statusControl?.value === 'Active') {
         this.currentWeight -= task.weight;
         this.activeWeight -= task.weight;
-      } else if (task.status === 'Locked') {
+      } else if (task.statusControl?.value === 'Locked') {
         this.lockedWeight -= task.weight;
-      } else if (task.status === 'Skip') {
+      } else if (task.statusControl?.value === 'Skip') {
         this.activeWeight -= task.weight;
         this.countSkipTasks--;
       }
-      task.status = 'Blocked';
+      task.statusControl?.setValue('Blocked');
     } else if (newStatus.value === 'Skip') {
-      if (task.status === 'Active') {
+      if (task.statusControl?.value === 'Active') {
         this.currentWeight -= task.weight;
-      } else if (task.status === 'Blocked') {
+      } else if (task.statusControl?.value === 'Blocked') {
         this.activeWeight += task.weight;
-      } else if (task.status === 'Locked') {
+      } else if (task.statusControl?.value === 'Locked') {
         this.activeWeight += task.weight;
         this.lockedWeight -= task.weight;
       }
       this.countSkipTasks++;
-      task.status = 'Skip';
+      task.statusControl?.setValue('Skip');
     } else if (newStatus.value === 'Locked') {
-      if (task.status === 'Active') {
+      if (task.statusControl?.value === 'Active') {
         this.activeWeight -= task.weight;
         this.currentWeight -= task.weight;
-      } else if (task.status === 'Skip') {
+      } else if (task.statusControl?.value === 'Skip') {
         this.activeWeight -= task.weight;
         this.countSkipTasks--;
       }
       this.lockedWeight += task.weight;
-      task.status = 'Locked';
+      task.statusControl?.setValue('Locked');
     } else {
       console.error('Invalid status');
+			console.log('Invalid status');
     }
-    this.recalculateChances();
+    this.calculateChances();
     this.calculatePoints();
     this.calculateSkipPercentage();
     //this.printWeight();
@@ -152,14 +159,9 @@ export class BlockListTableComponent implements AfterViewInit{
     return parseFloat(((weight / this.currentWeight) * 100).toFixed(2));
   }
 
-  recalculateChances(first: boolean = false) {
-    if (first) {
-      this.Tasks.forEach(task => {
-        task.status = 'Active';
-      });
-    }
+  calculateChances(first: boolean = false) {
     this.Tasks.forEach(task => {
-      if (task.status === 'Active') {
+      if (task.statusControl?.value === 'Active') {
         task.chance = this.calculateChance(task.weight);
       } else {
         task.chance = 0;
@@ -177,17 +179,26 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   onSetSlayerLvl(Lvl: string) {
-    this.Tasks.forEach(task => {
-      if (task.slayer && task.slayer > parseFloat(Lvl)) {
-        task.status = 'Locked';
-      }
-    });
-    //console.log(this.Tasks);
-    //console.log('Slayer Lvl: ' + this.reqsForm.get('slayerLvl')?.value);
+    this.userSlayerLvl = parseInt(Lvl);
+    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
   onSetCombatLvl(Lvl: string) {
-    console.log('Combat Lvl: ' + this.reqsForm.get('combatLvl')?.value);
+    this.userCombatLvl = parseInt(Lvl);
+		this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+  }
+
+  checkLockedTasks(combat: number, slayer: number) {
+    this.Tasks.forEach(task => {
+      if ((task.combat > combat || task.slayer > slayer) && task.status === 'Active') {
+        task.statusControl?.setValue('Locked');
+      } else if ((task.combat <= combat && task.slayer <= slayer) && (task.statusControl?.value === 'Locked' && task.status != 'Locked')) {
+        task.statusControl?.setValue('Active');
+      }
+    });
+    this.calculateChances();
+    //console.log('Combat: ' + combat, 'Slayer: ' + slayer);
+    console.log(this.Tasks);
   }
 
 }
