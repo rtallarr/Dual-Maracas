@@ -7,12 +7,13 @@ import { FormControl } from '@angular/forms';
 export interface TaskData {
   id: string;
   name: string;
-  status: string;
+  status: string; //used to know which tasks are payed to unlock
   weight: number;
   chance?: number;
   slayer: number;
   combat: number;
-  statusControl?: FormControl; //juntar esta wea en status nomas
+  statusControl?: FormControl;
+  prevStatus?: string;
 }
 
 @Component({

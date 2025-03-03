@@ -60,13 +60,11 @@ export class BlockListTableComponent implements AfterViewInit{
 
   displayedColumns: string[] = ['name', 'weight', 'chance', 'status'];
   dataSource!: MatTableDataSource<TaskData>;
-	
-  statusControl = new FormControl('Active');
 
   reqsForm = this.fb.group({
     //define a field with a number type
     slayerLvl: [1],
-    combatLvl: [1],
+    combatLvl: [3],
   });
 
   constructor(private cdref: ChangeDetectorRef) { }
@@ -75,14 +73,16 @@ export class BlockListTableComponent implements AfterViewInit{
   ngAfterViewInit() {
 		this.Tasks = this.Tasks.map(task => ({
       ...task,
-      statusControl: new FormControl(task.status)
+      statusControl: new FormControl(task.status),
+      prevStatus: task.status,
     }));
     this.dataSource = new MatTableDataSource(this.Tasks);
     this.dataSource.sort = this.sort;
     //this.lockedWeight = this.Tasks.filter(task => task.statusControl?.value === 'Locked').reduce((acc, task) => acc + task.weight, 0);
-    this.activeWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0); //- this.lockedWeight
+    this.activeWeight = this.Tasks.reduce((acc, task) => acc + task.weight, 0); //- this.lockedWeight;
     this.currentWeight = this.activeWeight;
     this.averagePointsSkip = this.averagePoints;
+    this.printWeight();
     this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
@@ -95,47 +95,48 @@ export class BlockListTableComponent implements AfterViewInit{
     }
   }
 
-  onChangeStatus(task: TaskData, newStatus: any) {
-    if (newStatus.value === 'Active') {
-      if (task.statusControl?.value === 'Blocked') {
+  onChangeStatus(task: TaskData) {
+    //console.log("new:", task.statusControl?.value, "prev:", task.prevStatus);
+    if (task.statusControl?.value === 'Active') {
+      if (task.prevStatus === 'Blocked') {
         this.activeWeight += task.weight
         this.currentWeight += task.weight;
-      } else if (task.statusControl?.value === 'Skip') {
+      } else if (task.prevStatus === 'Skip') {
         this.currentWeight += task.weight;
         this.countSkipTasks--;
-      } else if (task.statusControl?.value === 'Locked') {
+      } else if (task.prevStatus === 'Locked') {
         this.activeWeight += task.weight;
         this.currentWeight += task.weight;
         this.lockedWeight -= task.weight;
       }
       task.statusControl?.setValue('Active');
-    } else if (newStatus.value === 'Blocked') {
-      if (task.statusControl?.value === 'Active') {
+    } else if (task.statusControl?.value === 'Blocked') {
+      if (task.prevStatus === 'Active') {
         this.currentWeight -= task.weight;
         this.activeWeight -= task.weight;
-      } else if (task.statusControl?.value === 'Locked') {
+      } else if (task.prevStatus === 'Locked') {
         this.lockedWeight -= task.weight;
-      } else if (task.statusControl?.value === 'Skip') {
+      } else if (task.prevStatus === 'Skip') {
         this.activeWeight -= task.weight;
         this.countSkipTasks--;
       }
       task.statusControl?.setValue('Blocked');
-    } else if (newStatus.value === 'Skip') {
-      if (task.statusControl?.value === 'Active') {
+    } else if (task.statusControl?.value === 'Skip') {
+      if (task.prevStatus === 'Active') {
         this.currentWeight -= task.weight;
-      } else if (task.statusControl?.value === 'Blocked') {
+      } else if (task.prevStatus === 'Blocked') {
         this.activeWeight += task.weight;
-      } else if (task.statusControl?.value === 'Locked') {
+      } else if (task.prevStatus === 'Locked') {
         this.activeWeight += task.weight;
         this.lockedWeight -= task.weight;
       }
       this.countSkipTasks++;
       task.statusControl?.setValue('Skip');
-    } else if (newStatus.value === 'Locked') {
-      if (task.statusControl?.value === 'Active') {
+    } else if (task.statusControl?.value === 'Locked') {
+      if (task.prevStatus === 'Active') {
         this.activeWeight -= task.weight;
         this.currentWeight -= task.weight;
-      } else if (task.statusControl?.value === 'Skip') {
+      } else if (task.prevStatus === 'Skip') {
         this.activeWeight -= task.weight;
         this.countSkipTasks--;
       }
@@ -143,8 +144,8 @@ export class BlockListTableComponent implements AfterViewInit{
       task.statusControl?.setValue('Locked');
     } else {
       console.error('Invalid status');
-			console.log('Invalid status');
     }
+    task.prevStatus = task.statusControl?.value;
     this.calculateChances();
     this.calculatePoints();
     this.calculateSkipPercentage();
@@ -159,7 +160,8 @@ export class BlockListTableComponent implements AfterViewInit{
     return parseFloat(((weight / this.currentWeight) * 100).toFixed(2));
   }
 
-  calculateChances(first: boolean = false) {
+  calculateChances() {
+    this.printWeight();
     this.Tasks.forEach(task => {
       if (task.statusControl?.value === 'Active') {
         task.chance = this.calculateChance(task.weight);
@@ -172,6 +174,7 @@ export class BlockListTableComponent implements AfterViewInit{
   calculatePoints() {
     this.averagePointsSkip = ((this.averagePoints*this.currentWeight) - 30*(this.activeWeight-this.currentWeight))/this.currentWeight;
     this.averagePointsSkip = parseFloat(this.averagePointsSkip.toFixed(3));
+    //console.log("Average points without skips", this.averagePoints, " Average points with skips", this.averagePointsSkip);
   }
 
   calculateSkipPercentage() {
@@ -196,9 +199,12 @@ export class BlockListTableComponent implements AfterViewInit{
         task.statusControl?.setValue('Active');
       }
     });
+    this.lockedWeight = this.Tasks.filter(task => task.statusControl?.value === 'Locked').reduce((acc, task) => acc + task.weight, 0);
+    this.currentWeight -= this.lockedWeight;
+    this.activeWeight -= this.lockedWeight;
     this.calculateChances();
     //console.log('Combat: ' + combat, 'Slayer: ' + slayer);
-    console.log(this.Tasks);
+    //console.log(this.Tasks);
   }
 
 }
