@@ -2,6 +2,10 @@ table {
     width: 100%;
 }
 
+.table-container {
+    margin: 20px;
+}
+
 .mat-mdc-form-field {
     font-size: 14px;
     width: 100%;
@@ -21,45 +25,14 @@ td, th {
     margin: 5px;
 }
 
-.bottom-card-container {
-    display: flex;
+.card-container {
     justify-content: center;
     margin: 20px;
-    width: 75%;
+    flex: 1 1 auto;
 }
 
-.bottom-card {
-    justify-content: center;
+.inner-card {
     margin: 10px;
-}
-
-.reqs-inner-card {
-    width: 50%;
-}
-
-.example-result-card {
-    background-color: antiquewhite;
-}
-
-.example-h2 {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-  
-.example-section {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    align-items: center;
-}
-
-.example-margin {
-    margin: 8px;
-}
-
-.example-width {
-    max-width: 180px;
-    width: 100%;
 }
 
 .mat-mdc-slider {
@@ -67,21 +40,13 @@ td, th {
     width: 100%;
 }
 
-.mat-mdc-card + .mat-mdc-card {
-    margin-top: 8px;
-}
-
-.example-result-card h2 {
-    margin: 0 8px;
-}
-
-.example-label-container {
+.label-container {
     display: flex;
     justify-content: space-between;
     margin: 20px 10px 0;
-    max-width: 284px;
+    max-width: 280px;
 }
 
-.example-result-card .example-value-label {
-    font-weight: 600;
+.points {
+    width: 400px;
 }
