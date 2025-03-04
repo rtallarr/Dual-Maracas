@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TaskData } from '../../views/block-list/block-list.component';
 
@@ -65,7 +65,6 @@ export class BlockListTableComponent implements AfterViewInit{
   dataSource!: MatTableDataSource<TaskData>;
 
   reqsForm = this.fb.group({
-    //define a field with a number type
     slayerLvl: [1],
     combatLvl: [3],
   });
