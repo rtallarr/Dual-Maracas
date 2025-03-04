@@ -24,9 +24,10 @@ export interface TaskData {
   styleUrl: './block-list.component.css'
 })
 export class BlockListComponent {
-  //DuradelPoints: number = (450 + 270 + 8*75 + 90*15)/100;  //short term with 50 & 100 in konar no elite diary
-  DuradelPoints: number = (750 + 525*3 + 375*8 + 225*9 + 75*80 + 15*899)/1000; //long term no konar
-  KonarPoints: number = (900 + 630*3 + 450*8 + 270*9 + 90*80 + 18*899)/1000; //long term no elite diary
+  DuradelPoints: number = (450 + 270 + 8*75 + 90*15)/100;  //short term with 50 & 100 in konar no elite diary
+  //DuradelPoints: number = (750 + 525*3 + 375*8 + 225*9 + 75*80 + 15*899)/1000; //long term no konar
+  //KonarPoints: number = (900 + 630*3 + 450*8 + 270*9 + 90*80 + 18*899)/1000; //long term no elite diary
+  KonarPoints: number = (450 + 270 + 8*90 + 90*18)/100 //short term no elite diary
 
   DuradelTasks: TaskData[] = [
     {id: '1', name: 'Aberrant spectres', status: 'Active', weight: 7, slayer: 60, combat: 65},
