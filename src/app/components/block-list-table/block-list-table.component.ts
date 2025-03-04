@@ -16,6 +16,15 @@ import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@ang
 
 import { TaskData } from '../../views/block-list/block-list.component';
 
+export interface TaskReq {
+  name: string;
+  slayer: number;
+  combat: number;
+  unlockable: boolean;
+  quests: string[];
+  magic?: number;
+}
+
 @Component({
   selector: 'app-block-list-table',
   standalone: true,
@@ -40,6 +49,54 @@ import { TaskData } from '../../views/block-list/block-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlockListTableComponent implements AfterViewInit{
+
+  Tasksreqs: TaskReq[] = [
+    {name: 'Aberrant spectres', slayer: 60, combat: 65, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Abyssal Demon', slayer: 85, combat: 85, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Adamant dragons', slayer: 1, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
+    {name: 'Ankou', slayer: 1, combat: 40, unlockable: false, quests: []},
+    {name: 'Araxytes', slayer: 92, combat: 1, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Aviansies', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Basilisks', slayer: 40, combat: 1, unlockable: true, quests: []},
+    {name: 'Black demons', slayer: 1, combat: 80, unlockable: false, quests: []},
+    {name: 'Black dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Bloodvelds', slayer: 50, combat: 50, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Blue dragons', slayer: 1, combat: 65, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Boss', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Cave horrors', slayer: 58, combat: 85, unlockable: false, quests: ['Cabin Fever']},
+    {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: ['Swan Song'], magic: 50},
+    {name: 'Dagannoth', slayer: 1, combat: 75, unlockable: false, quests: ['Horror from the Deep']},
+    {name: 'Dark beasts', slayer: 90, combat: 90, unlockable: false, quests: ['Mourning\'s End Part II']},
+    {name: 'Drakes', slayer: 84, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
+    {name: 'Dust devils', slayer: 65, combat: 70, unlockable: false, quests: ['Desert Treasure I']},
+    {name: 'Elves', slayer: 1, combat: 70, unlockable: false, quests: ['Regicide']},
+    {name: 'Fire giants', slayer: 1, combat: 65, unlockable: false, quests: []},
+    {name: 'Fossil Island Wyverns', slayer: 66, combat: 60, unlockable: false, quests: ['Bone Voyage', 'Elemental Workshop I']},
+    {name: 'Gargoyles', slayer: 75, combat: 80, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Greater demons', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Hellhounds', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Iron dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Kalphites', slayer: 1, combat: 15, unlockable: false, quests: []},
+    {name: 'Kurasks', slayer: 70, combat: 65, unlockable: false, quests: []},
+    {name: 'Lizardmen', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Mithril dragons', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Mutated Zygomites', slayer: 57, combat: 60, unlockable: false, quests: ['Lost City']},
+    {name: 'Nechryael', slayer: 80, combat: 85, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Red dragons', slayer: 1, combat: 68, unlockable: true, quests: ['Dragon Slayer I']},
+    {name: 'Rune dragons', slayer: 1, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
+    {name: 'Skeletal wyverns', slayer: 72, combat: 70, unlockable: false, quests: ['Elemental Workshop I']},
+    {name: 'Smoke devils', slayer: 93, combat: 85, unlockable: false, quests: []},
+    {name: 'Spiritual creatures', slayer: 63, combat: 60, unlockable: false, quests: ['Death Plateau']},
+    {name: 'Steel dragons', slayer: 1, combat: 85, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Suqahs', slayer: 1, combat: 85, unlockable: false, quests: ['Lunar Diplomacy']},
+    {name: 'Trolls', slayer: 1, combat: 60, unlockable: false, quests: []},
+    {name: 'TzHaar', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Vampyres', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Warped creatures', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Waterfiends', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Wyrms', slayer: 62, combat: 1, unlockable: false, quests: []}
+  ];
+
   private _snackBar = inject(MatSnackBar);
   private readonly fb = inject(FormBuilder);
 
@@ -71,12 +128,12 @@ export class BlockListTableComponent implements AfterViewInit{
 
   constructor(private cdref: ChangeDetectorRef) { }
 
-  // Reload with data from parent component
+  // Reload with data from parent component this.Tasksreqs.find(req => req.name === task.name);
   ngAfterViewInit() {
 		this.Tasks = this.Tasks.map(task => ({
       ...task,
-      statusControl: new FormControl(task.status),
-      prevStatus: task.status,
+      statusControl: new FormControl(this.Tasksreqs.find(req => req.name === task.name)?.unlockable ? 'Locked' : 'Active'), //if unlockable, set to locked
+      prevStatus: task.statusControl?.value,
     }));
     this.dataSource = new MatTableDataSource(this.Tasks);
     this.dataSource.sort = this.sort;
@@ -145,12 +202,12 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   checkLockedTasks(combat: number, slayer: number) {
-    let lockcont = 0;
     this.Tasks.forEach(task => {
-      if ((task.combat > combat || task.slayer > slayer) && task.status === 'Active') {
+      //find the combat from tasksreqs via name
+      let taskReq = this.Tasksreqs.find(req => req.name === task.name);
+      if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer)) {
         task.statusControl?.setValue('Locked');
-        lockcont++;
-      } else if ((task.combat <= combat && task.slayer <= slayer) && (task.statusControl?.value === 'Locked' && task.status != 'Locked')) {
+      } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
         task.statusControl?.setValue('Active');
       }
     });
