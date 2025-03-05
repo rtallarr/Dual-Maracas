@@ -75,6 +75,7 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Gargoyles', slayer: 75, combat: 80, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Greater demons', slayer: 1, combat: 75, unlockable: false, quests: []},
     {name: 'Hellhounds', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Hydras', slayer: 95, combat: 1, unlockable: false, quests: []},
     {name: 'Iron dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Kalphites', slayer: 1, combat: 15, unlockable: false, quests: []},
     {name: 'Kurasks', slayer: 70, combat: 65, unlockable: false, quests: []},

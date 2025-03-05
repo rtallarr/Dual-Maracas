@@ -56,7 +56,7 @@ export class BlockListComponent {
     {id: '9', name: 'Bloodvelds', weight: 8},
     {id: '10', name: 'Blue dragons', weight: 4},
     {id: '11', name: 'Boss', weight: 12},
-    {id: '13', name: 'Cave horros', weight: 4},
+    {id: '13', name: 'Cave horrors', weight: 4},
     {id: '14', name: 'Cave kraken', weight: 9},
     {id: '15', name: 'Dagannoth', weight: 9},
     {id: '16', name: 'Dark beasts', weight: 11},
