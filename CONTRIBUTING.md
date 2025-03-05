@@ -17,4 +17,4 @@ Please prefix your commit messages with one of the following:
   * `docs`: Documentation only changes.
   * `refactor`: A code change that neither fixes a bug or adds a feature.
   * `test`: Adding missing tests.
-  * `chore`: Changes to the build process or auxiliary tools and libraries such as documentation generation.
+  * `build`: Changes to the build process or auxiliary tools and libraries such as documentation generation.
