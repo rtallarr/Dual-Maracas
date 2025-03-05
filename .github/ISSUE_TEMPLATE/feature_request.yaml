@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: 
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this form!
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and concise description.
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: Explain the solution proposed and any other context or screenshots about the feature request here.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
