@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { FormControl } from '@angular/forms';
 
 import { BlockListTableComponent } from '../../components/block-list-table/block-list-table.component';
-import { FormControl } from '@angular/forms';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 export interface TaskData {
   id: string;
@@ -16,7 +17,7 @@ export interface TaskData {
 @Component({
   selector: 'app-block-list',
   standalone: true,
-  imports: [BlockListTableComponent, MatTabsModule],
+  imports: [BlockListTableComponent, MatTabsModule, NavbarComponent],
   templateUrl: './block-list.component.html',
   styleUrl: './block-list.component.css'
 })

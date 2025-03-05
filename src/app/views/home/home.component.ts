@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,5 +9,7 @@ import { RouterOutlet, RouterLink } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
+  constructor(private router: Router) {
+    this.router.navigate(['/blocklist']);
+  }
 }
