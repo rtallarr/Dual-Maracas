@@ -12,6 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TaskData } from '../../views/block-list/block-list.component';
@@ -43,6 +45,8 @@ export interface TaskReq {
     FormsModule,
     ReactiveFormsModule,
     MatSliderModule,
+    MatCheckboxModule,
+    MatGridListModule
   ],
   templateUrl: './block-list-table.component.html',
   styleUrl: './block-list-table.component.css',
@@ -64,7 +68,7 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Blue dragons', slayer: 1, combat: 65, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Boss', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Cave horrors', slayer: 58, combat: 85, unlockable: false, quests: ['Cabin Fever']},
-    {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: ['Swan Song'], magic: 50},
+    {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: []},
     {name: 'Dagannoth', slayer: 1, combat: 75, unlockable: false, quests: ['Horror from the Deep']},
     {name: 'Dark beasts', slayer: 90, combat: 90, unlockable: false, quests: ['Mourning\'s End Part II']},
     {name: 'Drakes', slayer: 84, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
@@ -98,6 +102,36 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Wyrms', slayer: 62, combat: 1, unlockable: false, quests: []}
   ];
 
+  questList = {
+    name: 'Unlock all',
+    completed: false,
+    quests: [
+      {name: 'Bone Voyage', completed: false},
+      {name: 'Cabin Fever', completed: false},
+      {name: 'Contact!', completed: false},
+      {name: 'Death Plateau', completed: false},
+      {name: 'Death to the Dorgeshuun', completed: false},
+      {name: 'Desert Treasure I', completed: false},
+      {name: 'Dragon Slayer I', completed: false},
+      {name: 'Dragon Slayer II', completed: false},
+      {name: 'Elemental Workshop I', completed: false},
+      {name: 'Ernest the Chicken', completed: false},
+      {name: 'Fairytale II', completed: false},
+      {name: 'Horror from the Deep', completed: false},
+      {name: 'Legends\' Quest', completed: false},
+      {name: 'Lost City', completed: false},
+      {name: 'Lunar Diplomacy', completed: false},
+      {name: 'Mourning\'s End Part II', completed: false},
+      {name: 'Olaf\'s Quest', completed: false},
+      {name: 'Priest in Peril', completed: false},
+      {name: 'Regicide', completed: false},
+      {name: 'Royal Trouble', completed: false},
+      {name: 'Rum Deal', completed: false},
+      {name: 'Skippy and the Mogres', completed: false},
+      {name: 'Waterfall Quest', completed: false},
+    ],
+  };
+
   private _snackBar = inject(MatSnackBar);
   private readonly fb = inject(FormBuilder);
 
@@ -105,6 +139,8 @@ export class BlockListTableComponent implements AfterViewInit{
   @Input() averagePoints: number = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  allComplete: boolean = false;
 
   activeWeight: number = 0;
   blockedWeight: number = 0;
@@ -153,6 +189,27 @@ export class BlockListTableComponent implements AfterViewInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  updateAllComplete() {
+    this.allComplete = this.questList.quests != null && this.questList.quests.every(t => t.completed);
+    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+  }
+
+  someComplete(): boolean {
+    if (this.questList.quests == null) {
+      return false;
+    }
+    return this.questList.quests.filter(t => t.completed).length > 0 && !this.allComplete;
+  }
+
+  setAll(completed: boolean) {
+    this.allComplete = completed;
+    if (this.questList.quests == null) {
+      return;
+    }
+    this.questList.quests.forEach(t => (t.completed = completed));
+    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
   onChangeStatus(task: TaskData) {
@@ -204,9 +261,10 @@ export class BlockListTableComponent implements AfterViewInit{
 
   checkLockedTasks(combat: number, slayer: number) {
     this.Tasks.forEach(task => {
-      //find the combat from tasksreqs via name
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
-      if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer)) {
+      let questsCompleted = taskReq?.quests.every(quest => this.questList.quests.find(q => q.name === quest)?.completed); //true if quests met
+      //console.log(task.name, questsCompleted);
+      if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
         task.statusControl?.setValue('Active');
