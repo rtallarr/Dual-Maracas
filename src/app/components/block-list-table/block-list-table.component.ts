@@ -67,6 +67,8 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Bloodvelds', slayer: 50, combat: 50, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Blue dragons', slayer: 1, combat: 65, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Boss', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Brine rats', slayer: 47, combat: 45, unlockable: false, quests: ['Olaf\'s Quest']},
+    {name: 'Bronze dragons', slayer: 1, combat: 75, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Cave horrors', slayer: 58, combat: 85, unlockable: false, quests: ['Cabin Fever']},
     {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: []},
     {name: 'Dagannoth', slayer: 1, combat: 75, unlockable: false, quests: ['Horror from the Deep']},
@@ -81,9 +83,12 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Hellhounds', slayer: 1, combat: 75, unlockable: false, quests: []},
     {name: 'Hydras', slayer: 95, combat: 1, unlockable: false, quests: []},
     {name: 'Iron dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Jellies', slayer: 52, combat: 57, unlockable: false, quests: []},
     {name: 'Kalphites', slayer: 1, combat: 15, unlockable: false, quests: []},
     {name: 'Kurasks', slayer: 70, combat: 65, unlockable: false, quests: []},
+    {name: 'Lesser Nagua', slayer: 48, combat: 1, unlockable: false, quests: []},
     {name: 'Lizardmen', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Minions of Scabaras', slayer: 1, combat: 85, unlockable: false, quests: ['Contact!']},
     {name: 'Mithril dragons', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Mutated Zygomites', slayer: 57, combat: 60, unlockable: false, quests: ['Lost City']},
     {name: 'Nechryael', slayer: 80, combat: 85, unlockable: false, quests: ['Priest in Peril']},
@@ -95,6 +100,7 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Steel dragons', slayer: 1, combat: 85, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Suqahs', slayer: 1, combat: 85, unlockable: false, quests: ['Lunar Diplomacy']},
     {name: 'Trolls', slayer: 1, combat: 60, unlockable: false, quests: []},
+    {name: 'Turoth', slayer: 55, combat: 60, unlockable: false, quests: []},
     {name: 'TzHaar', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Vampyres', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Warped creatures', slayer: 1, combat: 1, unlockable: true, quests: []},
@@ -263,7 +269,7 @@ export class BlockListTableComponent implements AfterViewInit{
     this.Tasks.forEach(task => {
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
       let questsCompleted = taskReq?.quests.every(quest => this.questList.quests.find(q => q.name === quest)?.completed); //true if quests met
-      //console.log(task.name, questsCompleted);
+      console.log(task.name, questsCompleted);
       if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
