@@ -17,6 +17,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TaskData } from '../../views/block-list/block-list.component';
+import { GetStatsService } from '../../services/get-stats.service';
 
 export interface TaskReq {
   name: string;
@@ -53,6 +54,8 @@ export interface TaskReq {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlockListTableComponent implements AfterViewInit{
+
+  constructor(private cdref: ChangeDetectorRef, private service: GetStatsService) { }
 
   Tasksreqs: TaskReq[] = [
     {name: 'Aberrant spectres', slayer: 60, combat: 65, unlockable: false, quests: ['Priest in Peril']},
@@ -169,8 +172,6 @@ export class BlockListTableComponent implements AfterViewInit{
     combatLvl: [3],
   });
 
-  constructor(private cdref: ChangeDetectorRef) { }
-
   // Reload with data from parent component this.Tasksreqs.find(req => req.name === task.name);
   ngAfterViewInit() {
 		this.Tasks = this.Tasks.map(task => ({
@@ -186,6 +187,22 @@ export class BlockListTableComponent implements AfterViewInit{
 
     this.averagePointsSkip = this.averagePoints;
     this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+
+    let respuesta: any = [];
+    this.service.getUserStats('El Xuekos').subscribe({
+      next: (data: any) => {
+        respuesta = { ... respuesta, ...data }
+      },
+      error: (error: any) => {
+        console.log(error);
+        return;
+      },
+      complete: () => {
+        console.log("API CALL", respuesta.body);
+      }
+    });
+
+    //console.log('request API', this.service.getUserStats('El Xuekos'));
   }
 
   applyFilter(event: Event) {
@@ -269,7 +286,7 @@ export class BlockListTableComponent implements AfterViewInit{
     this.Tasks.forEach(task => {
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
       let questsCompleted = taskReq?.quests.every(quest => this.questList.quests.find(q => q.name === quest)?.completed); //true if quests met
-      console.log(task.name, questsCompleted);
+      //console.log(task.name, questsCompleted);
       if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 

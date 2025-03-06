@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 export const routes: Routes = [
     {
