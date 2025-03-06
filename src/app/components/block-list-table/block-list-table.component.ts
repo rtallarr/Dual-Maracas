@@ -28,29 +28,28 @@ export interface TaskReq {
 }
 
 @Component({
-  selector: 'app-block-list-table',
-  standalone: true,
-  imports: [
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatTableModule, 
-    MatSortModule, 
-    MatPaginatorModule, 
-    MatIconModule, 
-    MatButtonModule, 
-    MatCardModule, 
-    MatDividerModule, 
-    MatTooltipModule,
-    MatButtonToggleModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatSliderModule,
-    MatCheckboxModule,
-    MatGridListModule
-  ],
-  templateUrl: './block-list-table.component.html',
-  styleUrl: './block-list-table.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-block-list-table',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatSliderModule,
+        MatCheckboxModule,
+        MatGridListModule
+    ],
+    templateUrl: './block-list-table.component.html',
+    styleUrl: './block-list-table.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlockListTableComponent implements AfterViewInit{
 

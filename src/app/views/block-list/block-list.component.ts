@@ -15,11 +15,10 @@ export interface TaskData {
 }
 
 @Component({
-  selector: 'app-block-list',
-  standalone: true,
-  imports: [BlockListTableComponent, MatTabsModule, NavbarComponent],
-  templateUrl: './block-list.component.html',
-  styleUrl: './block-list.component.css'
+    selector: 'app-block-list',
+    imports: [BlockListTableComponent, MatTabsModule, NavbarComponent],
+    templateUrl: './block-list.component.html',
+    styleUrl: './block-list.component.css'
 })
 export class BlockListComponent {
   DuradelPoints: number = (450 + 270 + 8*75 + 90*15)/100; //50 & 100 in konar no elite diary
