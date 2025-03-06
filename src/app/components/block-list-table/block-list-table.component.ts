@@ -14,7 +14,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TaskData } from '../../views/block-list/block-list.component';
 
@@ -170,7 +170,7 @@ export class BlockListTableComponent implements AfterViewInit{
   displayedColumns: string[] = ['name', 'weight', 'chance', 'status'];
   dataSource!: MatTableDataSource<TaskData>;
 
-  reqsForm = this.fb.group({
+  reqsForm: FormGroup = this.fb.group({
     slayerLvl: [1],
     combatLvl: [3],
   });
