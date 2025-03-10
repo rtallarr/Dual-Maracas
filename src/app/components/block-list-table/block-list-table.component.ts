@@ -176,7 +176,7 @@ export class BlockListTableComponent implements AfterViewInit{
 
   constructor(private cdref: ChangeDetectorRef) { }
 
-  // Reload with data from parent component this.Tasksreqs.find(req => req.name === task.name);
+  // Reload with data from parent component
   ngAfterViewInit() {
 		this.Tasks = this.Tasks.map(task => ({
       ...task,
