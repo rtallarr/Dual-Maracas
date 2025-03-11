@@ -8,7 +8,5 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
     styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  constructor(private router: Router) {
-    this.router.navigate(['/blocklist']);
-  }
+
 }

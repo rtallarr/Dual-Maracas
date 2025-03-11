@@ -1,0 +1,10 @@
+<app-navbar></app-navbar>
+<h2>{{data.title}}</h2>
+@for (section of data.sections; track $index) {
+    <h3>{{section.subtitle}}</h3>
+    @for (step of section.steps; track $index) {
+        <mat-checkbox color="primary">
+            {{step}}
+        </mat-checkbox>
+    }
+}
