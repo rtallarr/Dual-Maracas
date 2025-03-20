@@ -75,7 +75,7 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: []},
     {name: 'Dagannoth', slayer: 1, combat: 75, unlockable: false, quests: ['Horror from the Deep']},
     {name: 'Dark beasts', slayer: 90, combat: 90, unlockable: false, quests: ['Mourning\'s End Part II']},
-    {name: 'Drakes', slayer: 84, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
+    {name: 'Drakes', slayer: 84, combat: 1, unlockable: false, quests: []},
     {name: 'Dust devils', slayer: 65, combat: 70, unlockable: false, quests: ['Desert Treasure I']},
     {name: 'Elves', slayer: 1, combat: 70, unlockable: false, quests: ['Regicide']},
     {name: 'Fever spiders', slayer: 42, combat: 40, unlockable: false, quests: ['Rum Deal']},
@@ -274,7 +274,7 @@ export class BlockListTableComponent implements AfterViewInit{
     this.Tasks.forEach(task => {
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
       let questsCompleted = taskReq?.quests.every(quest => this.questList.quests.find(q => q.name === quest)?.completed); //true if quests met
-      console.log(task.name, questsCompleted);
+      //console.log(task.name, questsCompleted);
       if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
