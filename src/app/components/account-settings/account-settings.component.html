@@ -1,0 +1,65 @@
+<!-- Quests -->
+<mat-card appearance="outlined" class="quest-container">
+    <mat-card-content>
+        <div class="quest-list">
+            <mat-checkbox [checked]="allComplete"
+                        [indeterminate]="someComplete()"
+                        (change)="setAll($event.checked)"
+                        color="warn">
+            {{questList.name}}
+            </mat-checkbox>
+            @for (quest of questList.quests; track quest) {
+                <mat-checkbox [(ngModel)]="quest.completed"
+                                (ngModelChange)="updateAllComplete()"
+                                color="primary">
+                    {{quest.name}}
+                </mat-checkbox>
+            }
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+<!-- Slayer and combat lvl -->
+<mat-card appearance="outlined" class="card-container" [formGroup]="reqsForm">
+    <mat-card-content>
+        <mat-card appearance="outlined" class="reqs inner-card">
+            <mat-card-content>
+                <div class="label-container">
+                    <label>Slayer Level</label>
+                    <label>{{slayerLvlSlider.value}}</label>
+                </div>
+                <mat-slider
+                    margin="8px"
+                    max="99"
+                    min="1"
+                    step="1"
+                    discrete="false"
+                    showTickMarks="false"
+                    (mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
+                    >
+                <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
+                </mat-slider>
+            </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="reqs inner-card">
+            <mat-card-content>
+                <div class="label-container">
+                    <label>Combat Level</label>
+                    <label>{{combatLvlSlider.value}}</label>
+                </div>
+                <mat-slider
+                    margin="8px"
+                    max="126"
+                    min="3"
+                    step="1"
+                    discrete="false"
+                    showTickMarks="false"
+                    (mouseup)="onSetCombatLvl(combatLvlSlider.value)"
+                    >
+                <input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
+                </mat-slider>
+            </mat-card-content>
+        </mat-card>
+    </mat-card-content>
+</mat-card>

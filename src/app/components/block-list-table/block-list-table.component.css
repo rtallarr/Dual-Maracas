@@ -2,16 +2,6 @@ table {
     width: 100%;
 }
 
-.quest-container {
-    margin: 20px;
-}
-
-.quest-list {
-    display: grid;
-    gap: 5px;
-    grid-template-columns: auto auto auto auto;
-}
-
 .table-container {
     margin: 20px;
 }

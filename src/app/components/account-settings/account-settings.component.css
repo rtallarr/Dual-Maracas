@@ -1,0 +1,31 @@
+.card-container {
+    justify-content: center;
+    margin: 20px;
+    flex: 1 1 auto;
+}
+
+.inner-card {
+    margin: 10px;
+}
+
+.quest-container {
+    margin: 20px;
+}
+
+.quest-list {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: auto auto auto auto;
+}
+
+.mat-mdc-slider {
+    max-width: 300px;
+    width: 100%;
+}
+
+.label-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px 0;
+    max-width: 280px;
+}

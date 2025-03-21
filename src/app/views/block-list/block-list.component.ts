@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormControl } from '@angular/forms';
 
 import { BlockListTableComponent } from '../../components/block-list-table/block-list-table.component';
+import { AccountSettingsComponent } from '../../components/account-settings/account-settings.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 export interface TaskData {
@@ -16,31 +18,47 @@ export interface TaskData {
 
 @Component({
     selector: 'app-block-list',
-    imports: [BlockListTableComponent, MatTabsModule, NavbarComponent],
+    imports: [
+      BlockListTableComponent,
+      AccountSettingsComponent,
+      MatTabsModule,
+      NavbarComponent,
+      CommonModule
+    ],
     templateUrl: './block-list.component.html',
     styleUrl: './block-list.component.css'
 })
-export class BlockListComponent {
+export class BlockListComponent implements OnInit {
+  selectedTab: number = 0;
+  quests: any[] = [];
+  combatLvl: number = 3;
+  slayerLvl: number = 1;
+
+  ngOnInit() {
+    const savedQuests = localStorage.getItem('quests');
+    if (savedQuests) {
+      this.quests = JSON.parse(savedQuests);
+    }
+    //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
+  }
+
+  onQuestsUpdated(updatedQuests: any[]) {
+    this.quests = [...updatedQuests];  // Reassign the array reference to detect changes
+    localStorage.setItem('quests', JSON.stringify(this.quests));
+  }
+
+  onCombatUpdated(level: any) {
+    this.combatLvl = level;
+  }
+
+  onSlayerUpdated(level: number) {
+    this.slayerLvl = level;
+  }
+
   DuradelPoints: number = (450 + 270 + 8*75 + 90*15)/100; //50 & 100 in konar no elite diary
-  //DuradelPoints: number = (750 + 525*3 + 375*8 + 225*9 + 75*80 + 15*899)/1000; //long term no konar
-  //KonarPoints: number = (900 + 630*3 + 450*8 + 270*9 + 90*80 + 18*899)/1000; //long term no elite diary
   KonarPoints: number = (450 + 270 + 8*90 + 90*18)/100; //no elite diary
   NievePoints: number = (300 + 180 + 8*60 + 90*12)/100; //no elite diary
   ChaeldarPoints: number = (250 + 150 + 8*50 + 90*10)/100;
-
-  /*
-  DURADEL
-  (1) 1000
-  (3) 250 - 500 - 750 
-  (8) 100 - 200 - 300 - 400 - 600 - 700 - 800 - 900 
-  (9) 50 - 150 - 250 - 350 - 450 - 550 - 650 - 850 - 950 
-  (80) 10 - 20 - 30 - 40 - 60 - 70 - 80 - 90 - 110 - 120 - 130 - 140 - 160 - 170 - 180 - 190 - 210 - 220 - 230 - 240 - 260 - 270 - 280 - 290 - 310 - 320 - 330 - 340 - 360 - 370 - 380 - 390 - 410 - 420 - 430 - 440 - 460 - 470 - 480 - 490 - 510 - 520 - 530 - 540 - 560 - 570 - 580 - 590 - 610 - 620 - 630 - 640 - 660 - 670 - 680 - 690 - 710 - 720 - 730 - 740 - 760 - 770 - 780 - 790 - 810 - 820 - 830 - 840 - 860 - 870 - 880 - 890 - 910 - 920 - 930 - 940 - 960 - 970 - 980 - 990
-
-  DURADEL short (100) + Konar 100/50
-  (1) 100
-  (1) 50
-  (8) 10 20 30 40 60 70 80 90
-  */
 
   DuradelTasks: TaskData[] = [
     {id: '1', name: 'Aberrant spectres', weight: 7},
@@ -230,6 +248,13 @@ export class BlockListComponent {
     {id: '42', name: 'Warped creatures', weight: 6},
     {id: '43', name: 'Waterfiends', weight: 2},
     {id: '44', name: 'Wyrms', weight: 7}
+  ];
+
+  slayerMasters = [
+    { id: 0, name: "Duradel", tasks: this.DuradelTasks, points: this.DuradelPoints },
+    { id: 1, name: "Konar", tasks: this.KonarTasks, points: this.KonarPoints },
+    { id: 2, name: "Nieve/Steve", tasks: this.NieveTasks, points: this.NievePoints },
+    { id: 3, name: "Chaeldar", tasks: this.ChaeldarTasks, points: this.ChaeldarPoints }
   ];
 
 }

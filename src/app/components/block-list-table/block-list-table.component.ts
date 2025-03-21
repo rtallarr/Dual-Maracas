@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, Input, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,7 +11,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,7 +42,6 @@ export interface TaskReq {
         MatButtonToggleModule,
         FormsModule,
         ReactiveFormsModule,
-        MatSliderModule,
         MatCheckboxModule,
         MatGridListModule
     ],
@@ -51,7 +49,8 @@ export interface TaskReq {
     styleUrl: './block-list-table.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BlockListTableComponent implements AfterViewInit{
+
+export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges{
 
   Tasksreqs: TaskReq[] = [
     {name: 'Aberrant spectres', slayer: 60, combat: 65, unlockable: false, quests: ['Priest in Peril']},
@@ -113,41 +112,14 @@ export class BlockListTableComponent implements AfterViewInit{
     {name: 'Wyrms', slayer: 62, combat: 1, unlockable: false, quests: []}
   ];
 
-  questList = {
-    name: 'Unlock all',
-    completed: false,
-    quests: [
-      {name: 'Bone Voyage', completed: false},
-      {name: 'Cabin Fever', completed: false},
-      {name: 'Contact!', completed: false},
-      {name: 'Death Plateau', completed: false},
-      {name: 'Death to the Dorgeshuun', completed: false},
-      {name: 'Desert Treasure I', completed: false},
-      {name: 'Dragon Slayer I', completed: false},
-      {name: 'Dragon Slayer II', completed: false},
-      {name: 'Elemental Workshop I', completed: false},
-      {name: 'Ernest the Chicken', completed: false},
-      {name: 'Fairytale II', completed: false},
-      {name: 'Horror from the Deep', completed: false},
-      {name: 'Legends\' Quest', completed: false},
-      {name: 'Lost City', completed: false},
-      {name: 'Lunar Diplomacy', completed: false},
-      {name: 'Mourning\'s End Part II', completed: false},
-      {name: 'Olaf\'s Quest', completed: false},
-      {name: 'Priest in Peril', completed: false},
-      {name: 'Regicide', completed: false},
-      {name: 'Royal Trouble', completed: false},
-      {name: 'Rum Deal', completed: false},
-      {name: 'Skippy and the Mogres', completed: false},
-      {name: 'Waterfall Quest', completed: false},
-    ],
-  };
-
   private _snackBar = inject(MatSnackBar);
-  private readonly fb = inject(FormBuilder);
 
+  @Input() quests: any;
   @Input() Tasks: TaskData[] = [];
   @Input() averagePoints: number = 0;
+  @Input() userCombatLvl: number = 3;
+  @Input() userSlayerLvl: number = 1;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -163,34 +135,35 @@ export class BlockListTableComponent implements AfterViewInit{
   countSkipTasks: number = 0;
   percentageSkipped: number = 0;
 
-  userCombatLvl: number = 3;
-  userSlayerLvl: number = 1;
-
   displayedColumns: string[] = ['name', 'weight', 'chance', 'status'];
   dataSource!: MatTableDataSource<TaskData>;
 
-  reqsForm = this.fb.group({
-    slayerLvl: [1],
-    combatLvl: [3],
-  });
-
-  constructor(private cdref: ChangeDetectorRef) { }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['quests'] || changes['averagePoints'] || changes['userCombatLvl'] || changes['userSlayerLvl']) {
+      //console.log("Changes detected");
+      this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+      //this.printLvls();
+    }
+  }
 
   // Reload with data from parent component
-  ngAfterViewInit() {
+  ngOnInit() {
 		this.Tasks = this.Tasks.map(task => ({
       ...task,
       statusControl: new FormControl(this.Tasksreqs.find(req => req.name === task.name)?.unlockable ? 'Locked' : 'Active'), //if unlockable, set to locked
       prevStatus: task.statusControl?.value,
     }));
     this.dataSource = new MatTableDataSource(this.Tasks);
-    this.dataSource.sort = this.sort;
     
     this.calculateWeights();
     this.totalWeight = this.activeWeight + this.blockedWeight + this.lockedWeight + this.skipWeight;
-
-    this.averagePointsSkip = this.averagePoints;
+    
     this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -200,27 +173,6 @@ export class BlockListTableComponent implements AfterViewInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  updateAllComplete() {
-    this.allComplete = this.questList.quests != null && this.questList.quests.every(t => t.completed);
-    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
-  }
-
-  someComplete(): boolean {
-    if (this.questList.quests == null) {
-      return false;
-    }
-    return this.questList.quests.filter(t => t.completed).length > 0 && !this.allComplete;
-  }
-
-  setAll(completed: boolean) {
-    this.allComplete = completed;
-    if (this.questList.quests == null) {
-      return;
-    }
-    this.questList.quests.forEach(t => (t.completed = completed));
-    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
   onChangeStatus(task: TaskData) {
@@ -258,6 +210,10 @@ export class BlockListTableComponent implements AfterViewInit{
                 'total weight: ' + (this.activeWeight + this.blockedWeight + this.lockedWeight + this.skipWeight));
   }
 
+  printLvls() {
+    console.log('Combat: ' + this.userCombatLvl, 'Slayer: ' + this.userSlayerLvl);
+  }
+
   calculateWeights() {
     this.activeWeight = this.Tasks.filter(task => task.statusControl?.value === 'Active').reduce((acc, task) => acc + task.weight, 0);
     this.lockedWeight = this.Tasks.filter(task => task.statusControl?.value === 'Locked').reduce((acc, task) => acc + task.weight, 0);
@@ -271,10 +227,19 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   checkLockedTasks(combat: number, slayer: number) {
+    if (!this.quests) {
+      console.error('No quests data available');
+      return;
+    }
+
     this.Tasks.forEach(task => {
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
-      let questsCompleted = taskReq?.quests.every(quest => this.questList.quests.find(q => q.name === quest)?.completed); //true if quests met
-      //console.log(task.name, questsCompleted);
+
+      let questsCompleted = taskReq?.quests.length === 0 ||
+      taskReq?.quests.every(quest =>
+        this.quests.find((q: { name: string; completed: boolean }) => q.name === quest)?.completed //true if quests reqs are met
+      );
+
       if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
@@ -299,24 +264,21 @@ export class BlockListTableComponent implements AfterViewInit{
   }
 
   calculatePoints() {
+    //console.log('totalWeight: ' + this.totalWeight, 'blockedWeight: ' + this.blockedWeight, 'skipWeight: ' + this.skipWeight);
     let withoutBlocks = this.totalWeight-this.blockedWeight;
     let finalWeight = withoutBlocks - this.skipWeight;
     this.averagePointsSkip = (((this.averagePoints*finalWeight) - (30*(withoutBlocks-finalWeight)))/withoutBlocks); //points earned - cost of skip
     this.averagePointsSkip = parseFloat(this.averagePointsSkip.toFixed(3));
+    //console.log('withoutBlocks: ' + withoutBlocks, 'finalWeight: ' + finalWeight, 'averagePointsSkip: ' + this.averagePointsSkip);
+    //this.printPoints();
+  }
+
+  printPoints() {
+    console.log('Average Points: ' + this.averagePoints, 'Average Points Skip: ' + this.averagePointsSkip);
   }
 
   calculateSkipPercentage() {
     return this.percentageSkipped = parseFloat(((this.countSkipTasks / this.Tasks.length) * 100).toFixed(2));
-  }
-
-  onSetSlayerLvl(Lvl: string) {
-    this.userSlayerLvl = parseInt(Lvl);
-    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
-  }
-
-  onSetCombatLvl(Lvl: string) {
-    this.userCombatLvl = parseInt(Lvl);
-		this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
   }
 
 }
