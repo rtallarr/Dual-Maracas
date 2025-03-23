@@ -88,14 +88,14 @@
                     </mat-form-field>
                 </mat-card-content>
             </mat-card>
-            <!-- <mat-card appearance="outlined" class="inner-card">
+            <mat-card appearance="outlined" class="inner-card" *ngIf="zoneName">
                 <mat-card-content>
                     <mat-checkbox formControlName='elite' color="primary">
-                         elite diary
+                        {{zoneName}} elite diary
                     </mat-checkbox>
                 </mat-card-content>
             </mat-card>
-            <mat-card appearance="outlined" class="inner-card">
+            <!-- <mat-card appearance="outlined" class="inner-card">
                 <mat-card-content class="konar-options">
                     <mat-checkbox #useKonar formControlName='konarSwap' color="primary">Swapping to Konar for boosts</mat-checkbox>
                     <div>

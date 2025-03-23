@@ -1,5 +1,6 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; 
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
@@ -19,7 +20,8 @@ import { MatTooltipModule} from '@angular/material/tooltip';
     MatFormFieldModule,
     MatSelectModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CommonModule
   ],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css'
@@ -27,6 +29,8 @@ import { MatTooltipModule} from '@angular/material/tooltip';
 export class AccountSettingsComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
+
+  @Input() zoneName: string = '';
 
   @Output() questsUpdated = new EventEmitter<any>();
   @Output() slayerLvlUpdated = new EventEmitter<number>();
@@ -80,7 +84,7 @@ export class AccountSettingsComponent implements OnInit {
   allComplete: boolean = false;
 
   ngOnInit() {
-    console.log(this.reqsForm);
+    console.log(this.zoneName);
     const savedQuests = localStorage.getItem('quests');
     const savedSlayerLvl = localStorage.getItem('slayerLvl');
     const savedCombatLvl = localStorage.getItem('combatLvl');

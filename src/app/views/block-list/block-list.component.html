@@ -9,7 +9,8 @@
 	}
 </div>
 
-<app-account-settings 
+<app-account-settings
+	[zoneName]="slayerMasters[selectedTab].zone"
 	(questsUpdated)="onQuestsUpdated($event)" 
 	(slayerLvlUpdated)="onSlayerUpdated($event)" 
 	(combatLvlUpdated)="onCombatUpdated($event)"
