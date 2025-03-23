@@ -80,6 +80,17 @@ export class AccountSettingsComponent implements OnInit {
   allComplete: boolean = false;
 
   ngOnInit() {
+    console.log(this.reqsForm);
+    const savedQuests = localStorage.getItem('quests');
+    const savedSlayerLvl = localStorage.getItem('slayerLvl');
+    const savedCombatLvl = localStorage.getItem('combatLvl');
+    
+    this.questList.quests = savedQuests ? JSON.parse(savedQuests) : this.questList.quests;
+    this.reqsForm.setValue({
+      slayerLvl: savedSlayerLvl ? parseInt(savedSlayerLvl) : 1,
+      combatLvl: savedCombatLvl ? parseInt(savedCombatLvl) : 3
+    });
+
     this.pointsForm.valueChanges.subscribe((value) => {
       //console.log(value);
       this.pointsFormUpdated.emit(this.pointsForm);
@@ -105,10 +116,12 @@ export class AccountSettingsComponent implements OnInit {
 
   onSetSlayerLvl(Lvl: string) {
     this.slayerLvlUpdated.emit(parseInt(Lvl));
+    localStorage.setItem('slayerLvl', Lvl);
   }
 
   onSetCombatLvl(Lvl: string) {
     this.combatLvlUpdated.emit(parseInt(Lvl));
+    localStorage.setItem('combatLvl', Lvl);
   }
 
 }
