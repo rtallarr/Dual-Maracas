@@ -29,36 +29,6 @@ export interface TaskData {
     styleUrl: './block-list.component.css'
 })
 export class BlockListComponent implements OnInit {
-  selectedTab: number = 0;
-  quests: any[] = [];
-  combatLvl: number = 3;
-  slayerLvl: number = 1;
-
-  ngOnInit() {
-    const savedQuests = localStorage.getItem('quests');
-    if (savedQuests) {
-      this.quests = JSON.parse(savedQuests);
-    }
-    //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
-  }
-
-  onQuestsUpdated(updatedQuests: any[]) {
-    this.quests = [...updatedQuests];  // Reassign the array reference to detect changes
-    localStorage.setItem('quests', JSON.stringify(this.quests));
-  }
-
-  onCombatUpdated(level: any) {
-    this.combatLvl = level;
-  }
-
-  onSlayerUpdated(level: number) {
-    this.slayerLvl = level;
-  }
-
-  DuradelPoints: number = (450 + 270 + 8*75 + 90*15)/100; //50 & 100 in konar no elite diary
-  KonarPoints: number = (450 + 270 + 8*90 + 90*18)/100; //no elite diary
-  NievePoints: number = (300 + 180 + 8*60 + 90*12)/100; //no elite diary
-  ChaeldarPoints: number = (250 + 150 + 8*50 + 90*10)/100;
 
   DuradelTasks: TaskData[] = [
     {id: '1', name: 'Aberrant spectres', weight: 7},
@@ -251,10 +221,121 @@ export class BlockListComponent implements OnInit {
   ];
 
   slayerMasters = [
-    { id: 0, name: "Duradel", tasks: this.DuradelTasks, points: this.DuradelPoints },
-    { id: 1, name: "Konar", tasks: this.KonarTasks, points: this.KonarPoints },
-    { id: 2, name: "Nieve/Steve", tasks: this.NieveTasks, points: this.NievePoints },
-    { id: 3, name: "Chaeldar", tasks: this.ChaeldarTasks, points: this.ChaeldarPoints }
+    {
+      id: 0,
+      name: "Duradel",
+      tasks: this.DuradelTasks,
+      zone: "",
+      points: {
+        'normal': [15, 75, 225, 375, 525, 750]
+      }
+    },
+    {
+      id: 1,
+      name: "Konar",
+      tasks: this.KonarTasks,
+      zone: "Kourend & Kebos",
+      points: {
+        'normal': [18, 90, 270, 450, 630, 900],
+        'diary': [20, 100, 300, 500, 700, 1000]
+      }
+    },
+    {
+      id: 2,
+      name: "Nieve/Steve",
+      tasks: this.NieveTasks,
+      zone: "Western provinces",
+      points: {
+        'normal': [12, 60, 180, 300, 420, 600],
+        'diary': [15, 75, 225, 375, 525, 750]
+      }
+    },
+    {
+      id: 3,
+      name: "Chaeldar",
+      tasks: this.ChaeldarTasks,
+      zone: "",
+      points: {
+        'normal': [10, 50, 150, 250, 350, 500]
+      }
+    }
   ];
+
+  selectedTab: number = 0;
+  quests: any[] = [];
+  combatLvl: number = 3;
+  slayerLvl: number = 1;
+  averagePoints: number = 0;
+  
+  pointsFormData: any = {
+    term: 'short',
+    elite: false,
+    konarSwap: false
+  };
+
+  ngOnInit() {
+    const savedQuests = localStorage.getItem('quests');
+    if (savedQuests) {
+      this.quests = JSON.parse(savedQuests);
+    }
+    //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
+    this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short', false) ?? 0;
+  }
+
+  onPointsFormUpdated(pointsForm: any) {
+    this.pointsFormData = pointsForm;
+    let masterPoints = this.slayerMasters[this.selectedTab].points;
+    this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.elite) ?? 0;
+  }
+
+  //short term: until 10 tasks
+  //medium term: until 100 tasks
+  //long term: until 1000 tasks
+  calcPoints(masterPoints: any, term: string, diary: boolean) {
+    let points;
+    if (term == 'short') {
+      if (diary && masterPoints['diary']) {
+        points = masterPoints['diary'][0]*9 + masterPoints['diary'][1]*1;
+      } else {
+        points = masterPoints['normal'][0]*9 + masterPoints['normal'][1]*1;
+      }
+      points = points/10;
+    } else if (term == 'medium') {
+      if (diary && masterPoints['diary']) {
+        points = masterPoints['diary'][0]*90 + masterPoints['diary'][1]*8 + masterPoints['diary'][2]*1 + masterPoints['diary'][3]*1;
+      } else {
+        points = masterPoints['normal'][0]*90 + masterPoints['normal'][1]*8 + masterPoints['normal'][2]*1 + masterPoints['normal'][3]*1;
+      }
+      points = points/100;
+    } else if (term == 'long') {
+      if (diary && masterPoints['diary']) {
+        points = masterPoints['diary'][0]*900 + masterPoints['diary'][1]*80 + masterPoints['diary'][2]*8 + masterPoints['diary'][3]*8 + masterPoints['diary'][4]*3 + masterPoints['diary'][5]*1;
+      } else {
+        points = masterPoints['normal'][0]*900 + masterPoints['normal'][1]*80 + masterPoints['normal'][2]*8 + masterPoints['normal'][3]*8 + masterPoints['normal'][4]*3 + masterPoints['normal'][5]*1;
+      }
+      points = points/1000;
+    } else {
+      console.error('Invalid term:', term);
+    }
+    return points;
+  }
+
+  onTabChanged(index: any) {
+    this.selectedTab = index;
+    let masterPoints = this.slayerMasters[this.selectedTab].points;
+    this.averagePoints = this.calcPoints(masterPoints, this.pointsFormData.term, this.pointsFormData.elite) ?? 0;
+  }
+
+  onQuestsUpdated(updatedQuests: any[]) {
+    this.quests = [...updatedQuests];  // Reassign the array reference to detect changes
+  }
+
+  onCombatUpdated(level: any) {
+    this.combatLvl = level;
+  }
+
+  onSlayerUpdated(level: number) {
+    this.slayerLvl = level;
+  }
 
 }

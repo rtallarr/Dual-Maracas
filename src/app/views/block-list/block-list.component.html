@@ -3,7 +3,7 @@
 
 <div class="tab-buttons">
 	@for (master of slayerMasters; track $index) {
-		<button class="tab-button" [class.active]="selectedTab === $index" (click)="selectedTab = $index">
+		<button class="tab-button" [class.active]="selectedTab === $index" (click)="onTabChanged($index)">
 			{{ master.name }}
 		</button>
 	}
@@ -12,45 +12,13 @@
 <app-account-settings 
 	(questsUpdated)="onQuestsUpdated($event)" 
 	(slayerLvlUpdated)="onSlayerUpdated($event)" 
-	(combatLvlUpdated)="onCombatUpdated($event)">
+	(combatLvlUpdated)="onCombatUpdated($event)"
+	(pointsFormUpdated)="onPointsFormUpdated($event.value)">
 </app-account-settings>
-
-<!-- Tab-specific content -->
-<!-- @if (selectedTab === 0) {
-	<app-block-list-table #blockListTable 
-		[Tasks]="DuradelTasks"
-		[averagePoints]="DuradelPoints"
-		[userCombatLvl]="combatLvl"
-		[userSlayerLvl]="slayerLvl"
-		[quests]="quests">
-	</app-block-list-table>
-}
-@if (selectedTab === 1) {
-	<app-block-list-table #blockListTable
-		[Tasks]="KonarTasks" 
-		[averagePoints]="KonarPoints"
-		[quests]="quests">
-	</app-block-list-table>
-}
-@if (selectedTab === 2) {
-	<app-block-list-table #blockListTable
-		[Tasks]="NieveTasks" 
-		[averagePoints]="NievePoints"
-		[quests]="quests">
-	</app-block-list-table>
-}
-@if (selectedTab === 3) {
-	<app-block-list-table #blockListTable
-		[Tasks]="ChaeldarTasks" 
-		[averagePoints]="ChaeldarPoints"
-		[quests]="quests">
-	</app-block-list-table>
-} -->
-
 
 <app-block-list-table #blockListTable 
 	[Tasks]="slayerMasters[selectedTab].tasks"
-	[averagePoints]="slayerMasters[selectedTab].points"
+	[averagePoints]="averagePoints"
 	[userCombatLvl]="combatLvl"
 	[userSlayerLvl]="slayerLvl"
 	[quests]="quests">
