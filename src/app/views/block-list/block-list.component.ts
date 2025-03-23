@@ -274,10 +274,6 @@ export class BlockListComponent implements OnInit {
   };
 
   ngOnInit() {
-    const savedQuests = localStorage.getItem('quests');
-    if (savedQuests) {
-      this.quests = JSON.parse(savedQuests);
-    }
     //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
     this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short', false) ?? 0;
   }
