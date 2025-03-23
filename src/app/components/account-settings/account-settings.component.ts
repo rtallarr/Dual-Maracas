@@ -84,16 +84,22 @@ export class AccountSettingsComponent implements OnInit {
   allComplete: boolean = false;
 
   ngOnInit() {
-    console.log(this.zoneName);
     const savedQuests = localStorage.getItem('quests');
     const savedSlayerLvl = localStorage.getItem('slayerLvl');
     const savedCombatLvl = localStorage.getItem('combatLvl');
-    
-    this.questList.quests = savedQuests ? JSON.parse(savedQuests) : this.questList.quests;
-    this.reqsForm.setValue({
-      slayerLvl: savedSlayerLvl ? parseInt(savedSlayerLvl) : 1,
-      combatLvl: savedCombatLvl ? parseInt(savedCombatLvl) : 3
-    });
+
+    if (savedQuests) {
+      this.questList.quests = JSON.parse(savedQuests);
+      this.questsUpdated.emit(this.questList.quests);
+    }
+    if (savedSlayerLvl) {
+      this.reqsForm.patchValue({slayerLvl: parseInt(savedSlayerLvl)});
+      this.slayerLvlUpdated.emit(parseInt(savedSlayerLvl));
+    }
+    if (savedCombatLvl) {
+      this.reqsForm.patchValue({combatLvl: parseInt(savedCombatLvl)});
+      this.combatLvlUpdated.emit(parseInt(savedCombatLvl));
+    }
 
     this.pointsForm.valueChanges.subscribe((value) => {
       //console.log(value);
