@@ -220,6 +220,7 @@ export class BlockListComponent implements OnInit {
     {id: '44', name: 'Wyrms', weight: 7}
   ];
 
+  //points: every 1, 10, 50, 100, 250, 1000 tasks
   slayerMasters = [
     {
       id: 0,
@@ -275,45 +276,70 @@ export class BlockListComponent implements OnInit {
 
   ngOnInit() {
     //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
-    this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short', false) ?? 0;
+    this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short', false);
   }
 
   onPointsFormUpdated(pointsForm: any) {
     this.pointsFormData = pointsForm;
     let masterPoints = this.slayerMasters[this.selectedTab].points;
-    this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.elite) ?? 0;
+    this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.elite, pointsForm.konarSwap, pointsForm.kourendDiary);
   }
 
   //short term: until 10 tasks
   //medium term: until 100 tasks
   //long term: until 1000 tasks
-  calcPoints(masterPoints: any, term: string, diary: boolean) {
-    let points;
-    if (term == 'short') {
-      if (diary && masterPoints['diary']) {
-        points = masterPoints['diary'][0]*9 + masterPoints['diary'][1]*1;
+  calcPoints(masterPoints: any, term: string, diary: boolean, konarSwap: number = 0, kourendDiary: boolean = false): number {
+    const multipliers: { [key: string]: number[] } = {
+      short: [9, 1],
+      medium: [90, 8, 1, 1],
+      long: [900, 80, 8, 8, 3, 1],
+    };
+    const divisors: { [key: string]: number } = {
+      short: 10,
+      medium: 100,
+      long: 1000,
+    };
+  
+    const basePoints = diary && masterPoints['diary'] ? masterPoints['diary'] : masterPoints['normal'];
+    const konarPoints = this.slayerMasters[1].points;
+
+    let source = basePoints.slice();
+    if (konarSwap == 10) {
+      if (kourendDiary && konarPoints.diary) {
+        source[1] = konarPoints.diary[1];
+        source[2] = konarPoints.diary[2];
+        source[3] = konarPoints.diary[3];
       } else {
-        points = masterPoints['normal'][0]*9 + masterPoints['normal'][1]*1;
+        source[1] = konarPoints.normal[1];
+        source[2] = konarPoints.normal[2];
+        source[3] = konarPoints.normal[3];
       }
-      points = points/10;
-    } else if (term == 'medium') {
-      if (diary && masterPoints['diary']) {
-        points = masterPoints['diary'][0]*90 + masterPoints['diary'][1]*8 + masterPoints['diary'][2]*1 + masterPoints['diary'][3]*1;
+    } else if (konarSwap == 50) {
+      if (kourendDiary && konarPoints.diary) {
+        source[2] = konarPoints.diary[2];
+        source[3] = konarPoints.diary[3];
       } else {
-        points = masterPoints['normal'][0]*90 + masterPoints['normal'][1]*8 + masterPoints['normal'][2]*1 + masterPoints['normal'][3]*1;
+        source[2] = konarPoints.normal[2];
+        source[3] = konarPoints.normal[3];
       }
-      points = points/100;
-    } else if (term == 'long') {
-      if (diary && masterPoints['diary']) {
-        points = masterPoints['diary'][0]*900 + masterPoints['diary'][1]*80 + masterPoints['diary'][2]*8 + masterPoints['diary'][3]*8 + masterPoints['diary'][4]*3 + masterPoints['diary'][5]*1;
+    } else if (konarSwap == 100) {
+      if (kourendDiary && konarPoints.diary) {
+        source[3] = konarPoints.diary[3];
       } else {
-        points = masterPoints['normal'][0]*900 + masterPoints['normal'][1]*80 + masterPoints['normal'][2]*8 + masterPoints['normal'][3]*8 + masterPoints['normal'][4]*3 + masterPoints['normal'][5]*1;
+        source[3] = konarPoints.normal[3];
       }
-      points = points/1000;
     } else {
-      console.error('Invalid term:', term);
+      source = basePoints.slice();
     }
-    return points;
+
+    console.log(basePoints, 'baseSource');
+    console.log(source, 'source');
+  
+    const points = multipliers[term].reduce((sum, multiplier, index) => {
+      return sum + (source[index]) * multiplier;
+    }, 0);
+  
+    return points / divisors[term];
   }
 
   onTabChanged(index: any) {

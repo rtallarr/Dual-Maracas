@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -77,7 +77,8 @@ export class AccountSettingsComponent implements OnInit {
   pointsForm = this.fb.group({
     term: ['short'],
     elite: [false],
-    konarSwap: [false]
+    konarSwap: [0],
+    kourendDiary: [false]
   });
 
   hid: boolean = true;
