@@ -96,6 +96,7 @@ export class AccountSettingsComponent implements OnInit {
 
     if (savedQuests) {
       this.questList.quests = JSON.parse(savedQuests);
+      this.updateAllComplete();
       this.questsUpdated.emit(this.questList.quests);
     }
     if (savedSlayerLvl) {
