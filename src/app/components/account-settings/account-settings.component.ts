@@ -1,5 +1,5 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -8,6 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+import { Quest } from '../../models/slayer.type';
 
 @Component({
   selector: 'app-account-settings',
@@ -21,7 +24,8 @@ import { MatTooltipModule} from '@angular/material/tooltip';
     MatSelectModule,
     MatIconModule,
     MatTooltipModule,
-    CommonModule
+    CommonModule,
+    MatExpansionModule
   ],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css'
@@ -29,6 +33,7 @@ import { MatTooltipModule} from '@angular/material/tooltip';
 export class AccountSettingsComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
+  readonly panelOpenState = signal(false);
 
   @Input() zoneName: string = '';
 
@@ -39,7 +44,7 @@ export class AccountSettingsComponent implements OnInit {
 
   toolTipInfo: string = 'Short term is up to 10 tasks bonus, medium term is up to 100 and long term is up to 1000.';
 
-  questList = {
+  questList: { name: string; completed: boolean; quests: Quest[] } = {
     name: 'Unlock all',
     completed: false,
     quests: [

@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { FormControl } from '@angular/forms';
 
 import { BlockListTableComponent } from '../../components/block-list-table/block-list-table.component';
 import { AccountSettingsComponent } from '../../components/account-settings/account-settings.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 
-export interface TaskData {
-  id: string;
-  name: string;
-  weight: number;
-  chance?: number;
-  statusControl?: FormControl;
-  prevStatus?: string;
-}
+import { Quest } from '../../models/slayer.type';
+import { SlayerMaster } from '../../models/slayer.type';
+import { PointArray } from '../../models/slayer.type';
+import { TaskData } from '../../models/slayer.type';
 
 @Component({
     selector: 'app-block-list',
@@ -221,7 +216,7 @@ export class BlockListComponent implements OnInit {
   ];
 
   //points: every 1, 10, 50, 100, 250, 1000 tasks
-  slayerMasters = [
+  slayerMasters: SlayerMaster[] = [
     {
       id: 0,
       name: "Duradel",
@@ -263,7 +258,7 @@ export class BlockListComponent implements OnInit {
   ];
 
   selectedTab: number = 0;
-  quests: any[] = [];
+  quests: Quest[] = [];
   combatLvl: number = 3;
   slayerLvl: number = 1;
   averagePoints: number = 0;
@@ -285,10 +280,10 @@ export class BlockListComponent implements OnInit {
     this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.elite, pointsForm.konarSwap, pointsForm.kourendDiary);
   }
 
-  //short term: until 10 tasks
-  //medium term: until 100 tasks
-  //long term: until 1000 tasks
-  calcPoints(masterPoints: any, term: string, diary: boolean, konarSwap: number = 0, kourendDiary: boolean = false): number {
+  //short term: up to 10 tasks
+  //medium term: up to 100 tasks
+  //long term: up to 1000 tasks
+  calcPoints(masterPoints: PointArray, term: string, diary: boolean, konarSwap: number = 0, kourendDiary: boolean = false): number {
     const multipliers: { [key: string]: number[] } = {
       short: [9, 1],
       medium: [90, 8, 1, 1],
@@ -332,8 +327,8 @@ export class BlockListComponent implements OnInit {
       source = basePoints.slice();
     }
 
-    console.log(basePoints, 'baseSource');
-    console.log(source, 'source');
+    //console.log(basePoints, 'baseSource');
+    //console.log(source, 'source');
   
     const points = multipliers[term].reduce((sum, multiplier, index) => {
       return sum + (source[index]) * multiplier;
@@ -342,17 +337,17 @@ export class BlockListComponent implements OnInit {
     return points / divisors[term];
   }
 
-  onTabChanged(index: any) {
+  onTabChanged(index: number) {
     this.selectedTab = index;
     let masterPoints = this.slayerMasters[this.selectedTab].points;
     this.averagePoints = this.calcPoints(masterPoints, this.pointsFormData.term, this.pointsFormData.elite) ?? 0;
   }
 
-  onQuestsUpdated(updatedQuests: any[]) {
+  onQuestsUpdated(updatedQuests: Quest[]) {
     this.quests = [...updatedQuests];  // Reassign the array reference to detect changes
   }
 
-  onCombatUpdated(level: any) {
+  onCombatUpdated(level: number) {
     this.combatLvl = level;
   }
 

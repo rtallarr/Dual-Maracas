@@ -13,18 +13,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TaskData } from '../../views/block-list/block-list.component';
-
-export interface TaskReq {
-  name: string;
-  slayer: number;
-  combat: number;
-  unlockable: boolean;
-  quests: string[];
-  magic?: number;
-}
+import { TaskData } from '../../models/slayer.type';
+import { Quest } from '../../models/slayer.type';
+import { TaskReq } from '../../models/slayer.type';
 
 @Component({
     selector: 'app-block-list-table',
@@ -114,7 +107,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
 
   private _snackBar = inject(MatSnackBar);
 
-  @Input() quests: any;
+  @Input() quests: Quest[] = [];
   @Input() Tasks: TaskData[] = [];
   @Input() averagePoints: number = 0;
   @Input() userCombatLvl: number = 3;
