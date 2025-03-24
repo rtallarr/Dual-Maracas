@@ -259,8 +259,6 @@ export class BlockListComponent implements OnInit {
 
   selectedTab: number = 0;
   quests: Quest[] = [];
-  combatLvl: number = 3;
-  slayerLvl: number = 1;
   averagePoints: number = 0;
   
   pointsFormData: any = {

@@ -86,9 +86,9 @@ export class AccountSettingsComponent implements OnInit {
 
   pointsForm = this.fb.group({
     term: ['short'],
-    elite: [false],
     konarSwap: [0],
-    kourendDiary: [false]
+    kourendDiary: [false],
+    WesternDiary: [false],
   });
 
   rsn = new FormControl('');
@@ -98,6 +98,7 @@ export class AccountSettingsComponent implements OnInit {
   ngOnInit() {
     const savedQuests = localStorage.getItem('quests');
     const savedLevels = localStorage.getItem('levels');
+    const savedDiaries = localStorage.getItem('diaries');
 
     if (savedQuests) {
       this.questList.quests = JSON.parse(savedQuests);
@@ -107,6 +108,10 @@ export class AccountSettingsComponent implements OnInit {
     if (savedLevels) {
       this.reqsForm.patchValue(JSON.parse(savedLevels));
       this.levelsUpdated.emit(this.reqsForm.value);
+    }
+    if (savedDiaries) {
+      this.pointsForm.patchValue(JSON.parse(savedDiaries));
+      this.pointsFormUpdated.emit(this.pointsForm);
     }
 
     this.pointsForm.valueChanges.subscribe((value) => {
@@ -137,6 +142,7 @@ export class AccountSettingsComponent implements OnInit {
   
         this.pointsForm.patchValue({
           kourendDiary: data.achievement_diaries["Kourend & Kebos"]?.Elite?.complete ?? false,
+          WesternDiary: data.achievement_diaries["Western Provinces"]?.Elite?.complete ?? false,
         });
   
         this.reqsForm.setValue({
@@ -150,9 +156,14 @@ export class AccountSettingsComponent implements OnInit {
 
         localStorage.setItem("quests", JSON.stringify(this.questList.quests));
         localStorage.setItem("levels", JSON.stringify(this.reqsForm.value));
+        localStorage.setItem("diaries", JSON.stringify({
+          'WesternDiary': this.pointsForm.value.WesternDiary,
+          'kourendDiary': this.pointsForm.value.kourendDiary,
+        }));
   
         this.levelsUpdated.emit(this.reqsForm.value);
         this.questsUpdated.emit(this.questList.quests);
+        this.pointsFormUpdated.emit(this.pointsForm);
       },
       error: (error) => {
         console.error("Error fetching stats:", error);
