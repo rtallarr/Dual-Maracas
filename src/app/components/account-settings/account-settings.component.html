@@ -1,14 +1,17 @@
 <!-- Quests -->
 <mat-card appearance="outlined" class="quest-container">
     <mat-card-content>
-        <div class="quest-list">
+        <div class="unlock-all-container">
             <mat-checkbox [checked]="allComplete"
                         [indeterminate]="someComplete()"
                         (change)="setAll($event.checked)"
-                        color="warn">
+                        color="warn"
+                        >
             {{questList.name}}
             </mat-checkbox>
-            @for (quest of questList.quests; track quest) {
+        </div>
+        <div class="quest-list">
+            @for (quest of questList.quests; track $index) {
                 <mat-checkbox [(ngModel)]="quest.completed"
                                 (ngModelChange)="updateAllComplete()"
                                 color="primary">
@@ -19,47 +22,95 @@
     </mat-card-content>
 </mat-card>
 
+<div class="stats-container">
+    <!-- Slayer and combat lvl -->
+    <mat-card appearance="outlined" class="card-container" [formGroup]="reqsForm">
+        <mat-card-header>
+            <mat-card-subtitle>Base stats</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="card-content-wrapper">
+            <mat-card appearance="outlined" class="inner-card">
+                <mat-card-content>
+                    <div class="label-container">
+                        <label>Slayer Level</label>
+                        <label>{{slayerLvlSlider.value}}</label>
+                    </div>
+                    <mat-slider
+                        margin="8px"
+                        max="99"
+                        min="1"
+                        step="1"
+                        discrete="false"
+                        showTickMarks="false"
+                        (mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
+                        >
+                    <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
+                    </mat-slider>
+                </mat-card-content>
+            </mat-card>
+            <mat-card appearance="outlined" class="inner-card">
+                <mat-card-content>
+                    <div class="label-container">
+                        <label>Combat Level</label>
+                        <label>{{combatLvlSlider.value}}</label>
+                    </div>
+                    <mat-slider
+                        margin="8px"
+                        max="126"
+                        min="3"
+                        step="1"
+                        (mouseup)="onSetCombatLvl(combatLvlSlider.value)"
+                        >
+                    <input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
+                    </mat-slider>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
 
-<!-- Slayer and combat lvl -->
-<mat-card appearance="outlined" class="card-container" [formGroup]="reqsForm">
-    <mat-card-content>
-        <mat-card appearance="outlined" class="reqs inner-card">
-            <mat-card-content>
-                <div class="label-container">
-                    <label>Slayer Level</label>
-                    <label>{{slayerLvlSlider.value}}</label>
-                </div>
-                <mat-slider
-                    margin="8px"
-                    max="99"
-                    min="1"
-                    step="1"
-                    discrete="false"
-                    showTickMarks="false"
-                    (mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
-                    >
-                <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
-                </mat-slider>
-            </mat-card-content>
-        </mat-card>
-        <mat-card appearance="outlined" class="reqs inner-card">
-            <mat-card-content>
-                <div class="label-container">
-                    <label>Combat Level</label>
-                    <label>{{combatLvlSlider.value}}</label>
-                </div>
-                <mat-slider
-                    margin="8px"
-                    max="126"
-                    min="3"
-                    step="1"
-                    discrete="false"
-                    showTickMarks="false"
-                    (mouseup)="onSetCombatLvl(combatLvlSlider.value)"
-                    >
-                <input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
-                </mat-slider>
-            </mat-card-content>
-        </mat-card>
-    </mat-card-content>
-</mat-card>
+    <!-- other reqs -->
+    <mat-card appearance="outlined" class="card-container" [formGroup]="pointsForm">
+        <mat-card-header>
+            <mat-card-subtitle>
+                <span>Point configuration</span>
+                <mat-icon fontIcon="info" matTooltip="{{toolTipInfo}}"></mat-icon>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="card-content-wrapper">
+            <mat-card appearance="outlined" class="inner-card">
+                <mat-card-content style="display: flex;">
+                    <mat-form-field style="flex: 1 1 auto;">
+                        <mat-select formControlName="term">
+                            <mat-option value="short">short term</mat-option>
+                            <mat-option value="medium">medium term</mat-option>
+                            <mat-option value="long">long term</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+            <mat-card appearance="outlined" class="inner-card" *ngIf="zoneName">
+                <mat-card-content>
+                    <mat-checkbox formControlName='elite' color="primary">
+                        {{zoneName}} elite diary
+                    </mat-checkbox>
+                </mat-card-content>
+            </mat-card>
+            <mat-card appearance="outlined" class="inner-card" *ngIf="zoneName!='Kourend & Kebos'">
+                <mat-card-content class="konar-options">
+                    <mat-checkbox formControlName="kourendDiary" color="primary">Kourend elite diary</mat-checkbox>
+                    <mat-form-field style="flex: 1 1 auto;">
+                        <mat-label>Swapping to Konar every</mat-label>
+                        <mat-select formControlName="konarSwap">
+                            @if (pointsForm.get('konarSwap')?.value) {
+                                <mat-option>Clear</mat-option>
+                            }
+                            <mat-option value="10">10 tasks</mat-option>
+                            <mat-option value="50">50 tasks</mat-option>
+                            <mat-option value="100">100 tasks</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+</div>

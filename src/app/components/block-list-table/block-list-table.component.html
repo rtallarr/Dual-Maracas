@@ -1,6 +1,9 @@
-<div style="display: flex; margin-top: 20px;">
-    <!-- Points display section -->
-    <mat-card appearance="outlined" class="card-container">
+<!-- Points display section -->
+<mat-card appearance="outlined" class="card-container">
+    <mat-card-header>
+        <mat-card-subtitle>Point summary</mat-card-subtitle>
+    </mat-card-header>
+    <div style="display: flex;">
         <mat-card appearance="outlined" class="inner-card">
             <mat-card-content>
                 Average points per task (skips) - {{averagePointsSkip}}
@@ -16,8 +19,8 @@
                 % of tasks skipped - {{percentageSkipped}}%
             </mat-card-content>
         </mat-card>
-    </mat-card>
-</div>
+    </div>
+</mat-card>
 
 <div class="table-container">
     <!-- Filter field -->
@@ -54,7 +57,7 @@
                 <td mat-cell *matCellDef="let row"> {{row.name}} </td>
             </ng-container>
     
-            <!-- Fruit Column -->
+            <!-- Weight Column -->
             <ng-container matColumnDef="weight">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
                 <td mat-cell *matCellDef="let row"> {{row.weight}} </td>
