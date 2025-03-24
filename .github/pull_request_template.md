@@ -10,7 +10,7 @@ Closes #XXXXX
 
 <!-- Please review the options carefully. -->
 
-- [ ] I have read and followed the [contribution guidelines](https://github.com/rtallarr/Dual-Maracas/blob/master/CONTRIBUTING.md).
+- [ ] I have read and followed the [contribution guidelines](https://github.com/RuneStuff/SlayerCalc/blob/master/CONTRIBUTING.md).
 - [ ] I have tested these changes either locally or on a preview.
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
