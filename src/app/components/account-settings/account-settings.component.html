@@ -1,7 +1,7 @@
 <mat-expansion-panel hideToggle style="margin: 20px;" expanded>
     <mat-expansion-panel-header>
-        <mat-panel-title> Account Settings </mat-panel-title>
-        <mat-panel-description>Click here to close</mat-panel-description>
+        <mat-panel-title>Settings </mat-panel-title>
+        <mat-panel-description>Click here to close settings</mat-panel-description>
     </mat-expansion-panel-header>
     <!-- Fetch stats -->
     <mat-card appearance="outlined" style="margin: 0 20px;">
@@ -86,9 +86,9 @@
         <!-- other reqs -->
         <mat-card appearance="outlined" class="card-container" [formGroup]="pointsForm">
             <mat-card-header>
-                <mat-card-subtitle>
+                <mat-card-subtitle style="display: flex; align-items: center;">
                     <span>Point configuration</span>
-                    <mat-icon fontIcon="info" matTooltip="{{toolTipInfo}}"></mat-icon>
+                    <mat-icon fontIcon="info" matTooltip="{{toolTipInfo}}" style="margin-left: 5px;"></mat-icon>
                 </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content class="card-content-wrapper">

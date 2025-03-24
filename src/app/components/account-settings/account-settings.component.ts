@@ -102,7 +102,7 @@ export class AccountSettingsComponent implements OnInit {
 
     if (savedQuests) {
       this.questList.quests = JSON.parse(savedQuests);
-      this.updateAllComplete();
+      this.allComplete = this.questList.quests != null && this.questList.quests.every(t => t.completed);
       this.questsUpdated.emit(this.questList.quests);
     }
     if (savedLevels) {
@@ -154,15 +154,15 @@ export class AccountSettingsComponent implements OnInit {
           quest.completed = data.quests[quest.name] === 2;
         });
 
-        localStorage.setItem("quests", JSON.stringify(this.questList.quests));
         localStorage.setItem("levels", JSON.stringify(this.reqsForm.value));
         localStorage.setItem("diaries", JSON.stringify({
           'WesternDiary': this.pointsForm.value.WesternDiary,
           'kourendDiary': this.pointsForm.value.kourendDiary,
         }));
+
+        this.updateAllComplete();
   
         this.levelsUpdated.emit(this.reqsForm.value);
-        this.questsUpdated.emit(this.questList.quests);
         this.pointsFormUpdated.emit(this.pointsForm);
       },
       error: (error) => {
