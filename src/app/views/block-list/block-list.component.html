@@ -12,15 +12,13 @@
 <app-account-settings
 	[zoneName]="slayerMasters[selectedTab].zone"
 	(questsUpdated)="onQuestsUpdated($event)" 
-	(slayerLvlUpdated)="onSlayerUpdated($event)" 
-	(combatLvlUpdated)="onCombatUpdated($event)"
+	(levelsUpdated)="onLevelsUpdated($event)"
 	(pointsFormUpdated)="onPointsFormUpdated($event.value)">
 </app-account-settings>
 
 <app-block-list-table #blockListTable 
 	[Tasks]="slayerMasters[selectedTab].tasks"
 	[averagePoints]="averagePoints"
-	[userCombatLvl]="combatLvl"
-	[userSlayerLvl]="slayerLvl"
+	[userLevels]="levelsData"
 	[quests]="quests">
 </app-block-list-table>

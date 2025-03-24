@@ -240,7 +240,7 @@ export class BlockListComponent implements OnInit {
       id: 2,
       name: "Nieve/Steve",
       tasks: this.NieveTasks,
-      zone: "Western provinces",
+      zone: "Western Provinces",
       points: {
         'normal': [12, 60, 180, 300, 420, 600],
         'diary': [15, 75, 225, 375, 525, 750]
@@ -267,6 +267,12 @@ export class BlockListComponent implements OnInit {
     term: 'short',
     elite: false,
     konarSwap: false
+  };
+
+  levelsData: any = {
+    combat: 3,
+    slayer: 1,
+    magic: 1
   };
 
   ngOnInit() {
@@ -347,12 +353,8 @@ export class BlockListComponent implements OnInit {
     this.quests = [...updatedQuests];  // Reassign the array reference to detect changes
   }
 
-  onCombatUpdated(level: number) {
-    this.combatLvl = level;
-  }
-
-  onSlayerUpdated(level: number) {
-    this.slayerLvl = level;
+  onLevelsUpdated(levels: any) {
+    this.levelsData = levels;
   }
 
 }

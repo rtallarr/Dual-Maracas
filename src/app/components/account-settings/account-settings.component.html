@@ -1,7 +1,20 @@
-<mat-expansion-panel hideToggle style="margin: 20px;">
+<mat-expansion-panel hideToggle style="margin: 20px;" expanded>
     <mat-expansion-panel-header>
         <mat-panel-title> Account Settings </mat-panel-title>
     </mat-expansion-panel-header>
+    <!-- Fetch stats -->
+    <mat-card appearance="outlined" style="margin: 0 20px;">
+        <mat-card-content style="display: flex; align-items: center;">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Enter your username</mat-label>
+                <input matInput maxlength="15" [formControl]="rsn">
+            </mat-form-field>
+            <button mat-fab extended color="warn" (click)="onFetchUser()" style="margin-left: 20px;">
+                <mat-icon>search</mat-icon>
+                Look up
+            </button>
+        </mat-card-content>
+    </mat-card>
     <!-- Quests -->
     <mat-card appearance="outlined" class="quest-container">
         <mat-card-content>
@@ -45,12 +58,10 @@
                             min="1"
                             step="1"
                             discrete="false"
-                            showTickMarks="false"
-                            (mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
-                            >
-                        <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
+                            showTickMarks="false">
+                          <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
                         </mat-slider>
-                    </mat-card-content>
+                      </mat-card-content>
                 </mat-card>
                 <mat-card appearance="outlined" class="inner-card">
                     <mat-card-content>
@@ -63,7 +74,6 @@
                             max="126"
                             min="3"
                             step="1"
-                            (mouseup)="onSetCombatLvl(combatLvlSlider.value)"
                             >
                         <input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
                         </mat-slider>

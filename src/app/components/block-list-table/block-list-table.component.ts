@@ -110,8 +110,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   @Input() quests: Quest[] = [];
   @Input() Tasks: TaskData[] = [];
   @Input() averagePoints: number = 0;
-  @Input() userCombatLvl: number = 3;
-  @Input() userSlayerLvl: number = 1;
+  @Input() userLevels: any = {};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -132,9 +131,9 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   dataSource!: MatTableDataSource<TaskData>;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['quests'] || changes['averagePoints'] || changes['userCombatLvl'] || changes['userSlayerLvl']) {
+    if (changes['quests'] || changes['averagePoints'] || changes['userLevels']) {
       //console.log("Changes detected");
-      this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
       //this.printLvls();
     }
   }
@@ -151,7 +150,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
     this.calculateWeights();
     this.totalWeight = this.activeWeight + this.blockedWeight + this.lockedWeight + this.skipWeight;
     
-    this.checkLockedTasks(this.userCombatLvl, this.userSlayerLvl);
+    this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
   }
 
   ngAfterViewInit() {
@@ -204,7 +203,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   }
 
   printLvls() {
-    console.log('Combat: ' + this.userCombatLvl, 'Slayer: ' + this.userSlayerLvl);
+    console.log('Combat: ' + this.userLevels.combatLvl, 'Slayer: ' + this.userLevels.slayerLvl);
   }
 
   calculateWeights() {
