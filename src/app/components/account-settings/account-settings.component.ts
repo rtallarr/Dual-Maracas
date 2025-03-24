@@ -37,7 +37,7 @@ export class AccountSettingsComponent implements OnInit {
   @Output() combatLvlUpdated = new EventEmitter<number>();
   @Output() pointsFormUpdated = new EventEmitter<FormGroup>();
 
-  toolTipInfo: string = 'Short term is up to 10 taks bonus, medium term is up to 100 and long term is up to 1000.';
+  toolTipInfo: string = 'Short term is up to 10 tasks bonus, medium term is up to 100 and long term is up to 1000.';
 
   questList = {
     name: 'Unlock all',
