@@ -113,7 +113,7 @@
                 <mat-card appearance="outlined" class="inner-card">
                     <mat-card-content class="konar-options">
                         <mat-checkbox formControlName="kourendDiary" color="primary">Kourend & Kebos elite diary</mat-checkbox>
-                        <mat-form-field style="flex: 1 1 auto;">
+                        <mat-form-field style="flex: 1 1 auto;" *ngIf="zoneName!='Kourend & Kebos'">
                             <mat-label>Swapping to Konar every</mat-label>
                             <mat-select formControlName="konarSwap">
                                 @if (pointsForm.get('konarSwap')?.value) {

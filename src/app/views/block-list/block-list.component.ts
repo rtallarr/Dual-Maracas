@@ -258,13 +258,15 @@ export class BlockListComponent implements OnInit {
   ];
 
   selectedTab: number = 0;
+  selectedTasks: TaskData[] = this.DuradelTasks;
   quests: Quest[] = [];
   averagePoints: number = 0;
   
   pointsFormData: any = {
     term: 'short',
-    elite: false,
-    konarSwap: false
+    kourendDiary: false,
+    WesternDiary: false,
+    konarSwap: 0
   };
 
   levelsData: any = {
@@ -275,19 +277,19 @@ export class BlockListComponent implements OnInit {
 
   ngOnInit() {
     //console.log("selectedTab:", this.selectedTab, 'Loaded quests:', this.quests);
-    this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short', false);
+    this.averagePoints = this.calcPoints(this.slayerMasters[0].points, 'short');
   }
 
   onPointsFormUpdated(pointsForm: any) {
     this.pointsFormData = pointsForm;
     let masterPoints = this.slayerMasters[this.selectedTab].points;
-    this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.elite, pointsForm.konarSwap, pointsForm.kourendDiary);
+    this.averagePoints = this.calcPoints(masterPoints, pointsForm.term, pointsForm.konarSwap, pointsForm.kourendDiary, pointsForm.WesternDiary);
   }
 
   //short term: up to 10 tasks
   //medium term: up to 100 tasks
   //long term: up to 1000 tasks
-  calcPoints(masterPoints: PointArray, term: string, diary: boolean, konarSwap: number = 0, kourendDiary: boolean = false): number {
+  calcPoints(masterPoints: PointArray, term: string, konarSwap: number = 0, kourendDiary: boolean = false, WesternDiary: boolean = false): number {
     const multipliers: { [key: string]: number[] } = {
       short: [9, 1],
       medium: [90, 8, 1, 1],
@@ -298,41 +300,33 @@ export class BlockListComponent implements OnInit {
       medium: 100,
       long: 1000,
     };
-  
-    const basePoints = diary && masterPoints['diary'] ? masterPoints['diary'] : masterPoints['normal'];
-    const konarPoints = this.slayerMasters[1].points;
+
+    let basePoints = [];
+
+    if (this.selectedTab == 1) {
+      basePoints = kourendDiary && this.slayerMasters[1].points.diary ? this.slayerMasters[1].points.diary : this.slayerMasters[1].points.normal;
+    } else {
+      basePoints = WesternDiary && masterPoints.diary ? masterPoints.diary : masterPoints.normal;
+    }
+    
+    const konarPoints = kourendDiary && this.slayerMasters[1].points.diary ? this.slayerMasters[1].points.diary : this.slayerMasters[1].points.normal;
 
     let source = basePoints.slice();
     if (konarSwap == 10) {
-      if (kourendDiary && konarPoints.diary) {
-        source[1] = konarPoints.diary[1];
-        source[2] = konarPoints.diary[2];
-        source[3] = konarPoints.diary[3];
-      } else {
-        source[1] = konarPoints.normal[1];
-        source[2] = konarPoints.normal[2];
-        source[3] = konarPoints.normal[3];
-      }
+        source[1] = konarPoints[1];
+        source[2] = konarPoints[2];
+        source[3] = konarPoints[3];
     } else if (konarSwap == 50) {
-      if (kourendDiary && konarPoints.diary) {
-        source[2] = konarPoints.diary[2];
-        source[3] = konarPoints.diary[3];
-      } else {
-        source[2] = konarPoints.normal[2];
-        source[3] = konarPoints.normal[3];
-      }
+        source[2] = konarPoints[2];
+        source[3] = konarPoints[3];
     } else if (konarSwap == 100) {
-      if (kourendDiary && konarPoints.diary) {
-        source[3] = konarPoints.diary[3];
-      } else {
-        source[3] = konarPoints.normal[3];
-      }
+        source[3] = konarPoints[3];
     } else {
       source = basePoints.slice();
     }
 
-    //console.log(basePoints, 'baseSource');
-    //console.log(source, 'source');
+    console.log(basePoints, 'baseSource');
+    console.log(source, 'source');
   
     const points = multipliers[term].reduce((sum, multiplier, index) => {
       return sum + (source[index]) * multiplier;
@@ -344,7 +338,15 @@ export class BlockListComponent implements OnInit {
   onTabChanged(index: number) {
     this.selectedTab = index;
     let masterPoints = this.slayerMasters[this.selectedTab].points;
-    this.averagePoints = this.calcPoints(masterPoints, this.pointsFormData.term, this.pointsFormData.elite) ?? 0;
+    //console.log('term', 'konarSwap:', this.pointsFormData.konarSwap, this.pointsFormData.term, 'masterPoints:', masterPoints );
+    this.averagePoints = this.calcPoints(
+      masterPoints,
+      this.pointsFormData.term,
+      this.pointsFormData.konarSwap,
+      this.pointsFormData.kourendDiary,
+      this.pointsFormData.WesternDiary
+    );
+    this.selectedTasks = this.slayerMasters[index].tasks;
   }
 
   onQuestsUpdated(updatedQuests: Quest[]) {

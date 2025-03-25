@@ -47,7 +47,7 @@ export class AccountSettingsComponent implements OnInit {
 
   @Output() questsUpdated = new EventEmitter<Quest[]>();
   @Output() levelsUpdated = new EventEmitter<any>();
-  @Output() pointsFormUpdated = new EventEmitter<FormGroup>();
+  @Output() pointsFormUpdated = new EventEmitter<any>();
 
   toolTipInfo: string = 'Short term is up to 10 tasks bonus, medium term is up to 100 and long term is up to 1000.';
 
@@ -113,12 +113,12 @@ export class AccountSettingsComponent implements OnInit {
     }
     if (savedDiaries) {
       this.pointsForm.patchValue(JSON.parse(savedDiaries));
-      this.pointsFormUpdated.emit(this.pointsForm);
+      this.pointsFormUpdated.emit(this.pointsForm.value);
     }
 
     this.pointsForm.valueChanges.subscribe((value) => {
       //console.log(value);
-      this.pointsFormUpdated.emit(this.pointsForm);
+      this.pointsFormUpdated.emit(value);
     });
 
     this.reqsForm.valueChanges.subscribe((value) => {
@@ -166,9 +166,6 @@ export class AccountSettingsComponent implements OnInit {
         }));
 
         this.updateAllComplete();
-  
-        this.levelsUpdated.emit(this.reqsForm.value);
-        this.pointsFormUpdated.emit(this.pointsForm);
       },
       error: (error) => {
         console.error("Error fetching stats:", error);

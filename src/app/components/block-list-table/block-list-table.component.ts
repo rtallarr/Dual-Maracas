@@ -132,10 +132,36 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   dataSource!: MatTableDataSource<TaskData>;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['quests'] || changes['averagePoints'] || changes['userLevels']) {
+    //heavily slows down the app
+    if (changes['Tasks'] && Array.isArray(this.Tasks)) {
+      // Avoid recreating form controls if they already exist
+      this.Tasks = this.Tasks.map(task => {
+        if (!task.statusControl) {
+          task.statusControl = new FormControl(
+            this.Tasksreqs.find(req => req.name === task.name)?.unlockable 
+              ? 'Locked' 
+              : 'Active'
+          );
+          task.prevStatus = task.statusControl.value;
+        }
+        return task;
+      });
+  
+      // Create datasource only when Tasks actually change
+      this.dataSource = new MatTableDataSource(this.Tasks);
+      this.dataSource.sort = this.sort;
+
+      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
+    }
+
+    if (changes['quests'] || changes['userLevels']) {
       //console.log("Changes detected");
       this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
       //this.printLvls();
+    }
+
+    if (changes['averagePoints']) {
+      this.calculateWeights();
     }
   }
 
@@ -156,16 +182,11 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   onChangeStatus(task: TaskData) {
