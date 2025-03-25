@@ -1,27 +1,9 @@
-<!-- Quests -->
-<mat-card appearance="outlined" class="quest-container">
-    <mat-card-content>
-        <div class="quest-list">
-            <mat-checkbox [checked]="allComplete"
-                        [indeterminate]="someComplete()"
-                        (change)="setAll($event.checked)"
-                        color="warn">
-            {{questList.name}}
-            </mat-checkbox>
-            @for (quest of questList.quests; track quest) {
-                <mat-checkbox [(ngModel)]="quest.completed"
-                                (ngModelChange)="updateAllComplete()"
-                                color="primary">
-                    {{quest.name}}
-                </mat-checkbox>
-            }
-        </div>
-    </mat-card-content>
-</mat-card>
-
-<div style="display: flex; margin-top: 20px;">
-    <!-- Points display section -->
-    <mat-card appearance="outlined" class="card-container">
+<!-- Points display section -->
+<mat-card appearance="outlined" class="card-container">
+    <mat-card-header>
+        <mat-card-subtitle>Point summary</mat-card-subtitle>
+    </mat-card-header>
+    <div style="display: flex;">
         <mat-card appearance="outlined" class="inner-card">
             <mat-card-content>
                 Average points per task (skips) - {{averagePointsSkip}}
@@ -37,52 +19,8 @@
                 % of tasks skipped - {{percentageSkipped}}%
             </mat-card-content>
         </mat-card>
-    </mat-card>
-    
-    <!-- Slayer and combat lvl -->
-    <mat-card appearance="outlined" class="card-container" [formGroup]="reqsForm">
-        <mat-card-content>
-            <mat-card appearance="outlined" class="reqs inner-card">
-                <mat-card-content>
-                    <div class="label-container">
-                        <label>Slayer Level</label>
-                        <label>{{slayerLvlSlider.value}}</label>
-                    </div>
-                    <mat-slider
-                        margin="8px"
-                        max="99"
-                        min="1"
-                        step="1"
-                        discrete="false"
-                        showTickMarks="false"
-                        (mouseup)="onSetSlayerLvl(slayerLvlSlider.value)"
-                        >
-                    <input matSliderThumb formControlName="slayerLvl" #slayerLvlSlider>
-                    </mat-slider>
-                </mat-card-content>
-            </mat-card>
-            <mat-card appearance="outlined" class="reqs inner-card">
-                <mat-card-content>
-                    <div class="label-container">
-                        <label>Combat Level</label>
-                        <label>{{combatLvlSlider.value}}</label>
-                    </div>
-                    <mat-slider
-                        margin="8px"
-                        max="126"
-                        min="3"
-                        step="1"
-                        discrete="false"
-                        showTickMarks="false"
-                        (mouseup)="onSetCombatLvl(combatLvlSlider.value)"
-                        >
-                    <input matSliderThumb formControlName="combatLvl" #combatLvlSlider>
-                    </mat-slider>
-                </mat-card-content>
-            </mat-card>
-        </mat-card-content>
-    </mat-card>
-</div>
+    </div>
+</mat-card>
 
 <div class="table-container">
     <!-- Filter field -->
@@ -119,7 +57,7 @@
                 <td mat-cell *matCellDef="let row"> {{row.name}} </td>
             </ng-container>
     
-            <!-- Fruit Column -->
+            <!-- Weight Column -->
             <ng-container matColumnDef="weight">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
                 <td mat-cell *matCellDef="let row"> {{row.weight}} </td>

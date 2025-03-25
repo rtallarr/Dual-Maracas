@@ -6,11 +6,11 @@ Simple Slayer calculator to plan your block list and skippable tasks, and to tra
 
 ## Contributing
 
-  * [Reporting a bug](https://github.com/rtallarr/Dual-Maracas/issues/new?assignees=&labels=bug&projects=&template=bug_report.yaml)
-  * Proposing [new features](https://github.com/rtallarr/Dual-Maracas/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yaml)
+  * [Reporting a bug](https://github.com/RuneStuff/SlayerCalc/issues/new?assignees=&labels=bug&projects=&template=bug_report.yaml)
+  * Proposing [new features](https://github.com/RuneStuff/SlayerCalc/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yaml)
 
-You can read the contributing docs [here](https://github.com/rtallarr/Dual-Maracas/blob/main/CONTRIBUTING.md)
+You can read the contributing docs [here](https://github.com/RuneStuff/SlayerCalc/blob/main/CONTRIBUTING.md)
 
 ## License
 
-Licensed under the [BSD-3-Clause](https://github.com/rtallarr/Dual-Maracas/blob/main/LICENSE) license.
+Licensed under the [BSD-3-Clause](https://github.com/RuneStuff/SlayerCalc/blob/main/LICENSE) license.

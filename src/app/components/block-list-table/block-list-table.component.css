@@ -2,16 +2,6 @@ table {
     width: 100%;
 }
 
-.quest-container {
-    margin: 20px;
-}
-
-.quest-list {
-    display: grid;
-    gap: 5px;
-    grid-template-columns: auto auto auto auto;
-}
-
 .table-container {
     margin: 20px;
 }
@@ -22,7 +12,7 @@ table {
 }
 
 td, th {
-    width: 25%;
+    width: 2%;
 }
 
 .icon-button-container {
@@ -36,27 +26,11 @@ td, th {
 }
 
 .card-container {
-    justify-content: center;
     margin: 20px;
-    flex: 1 1 auto;
 }
 
 .inner-card {
     margin: 10px;
-}
-
-.mat-mdc-slider {
-    max-width: 300px;
-    width: 100%;
-}
-
-.label-container {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 10px 0;
-    max-width: 280px;
-}
-
-.points {
-    width: 400px;
+    flex: 1 1 auto;
+    justify-content: center;
 }

@@ -1,15 +1,24 @@
 <app-navbar></app-navbar>
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
-	<mat-tab label="Duradel">
-		<app-block-list-table [Tasks]="DuradelTasks" [averagePoints]="DuradelPoints"></app-block-list-table>
-	</mat-tab>
-	<mat-tab label="Konar">
-		<app-block-list-table [Tasks]="KonarTasks" [averagePoints]="KonarPoints"></app-block-list-table>
-	</mat-tab>
-	<mat-tab label="Nieve/Steve">
-		<app-block-list-table [Tasks]="NieveTasks" [averagePoints]="NievePoints"></app-block-list-table>
-	</mat-tab>
-	<mat-tab label="Chaeldar">
-		<app-block-list-table [Tasks]="ChaeldarTasks" [averagePoints]="ChaeldarPoints"></app-block-list-table>
-	</mat-tab>
-</mat-tab-group>
+
+
+<div class="tab-buttons">
+	@for (master of slayerMasters; track $index) {
+		<button class="tab-button" [class.active]="selectedTab === $index" (click)="onTabChanged($index)">
+			{{ master.name }}
+		</button>
+	}
+</div>
+
+<app-account-settings
+	[zoneName]="slayerMasters[selectedTab].zone"
+	(questsUpdated)="onQuestsUpdated($event)" 
+	(levelsUpdated)="onLevelsUpdated($event)"
+	(pointsFormUpdated)="onPointsFormUpdated($event.value)">
+</app-account-settings>
+
+<app-block-list-table #blockListTable 
+	[Tasks]="slayerMasters[selectedTab].tasks"
+	[averagePoints]="averagePoints"
+	[userLevels]="levelsData"
+	[quests]="quests">
+</app-block-list-table>
