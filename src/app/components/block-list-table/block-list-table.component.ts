@@ -116,6 +116,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   @ViewChild(MatSort) sort!: MatSort;
 
   allComplete: boolean = false;
+  tasksBlocked: number = 0;
 
   activeWeight: number = 0;
   blockedWeight: number = 0;
@@ -169,6 +170,8 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
 
   onChangeStatus(task: TaskData) {
     //console.log("new:", task.statusControl?.value, "prev:", task.prevStatus);
+    this.tasksBlocked = this.Tasks.filter(task => task.statusControl?.value === 'Blocked').length;
+
     if (task.statusControl?.value === 'Active') {
       if (task.prevStatus === 'Skip') {
         this.countSkipTasks--;
@@ -177,6 +180,11 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
     } else if (task.statusControl?.value === 'Blocked') {
       if (task.prevStatus === 'Skip') {
         this.countSkipTasks--;
+      }
+      if (this.tasksBlocked > 6) {
+        this._snackBar.open('You have more than 6 tasks blocked!', 'Close', {
+          duration: 2500
+        });
       }
       task.statusControl?.setValue('Blocked');
     } else if (task.statusControl?.value === 'Skip') {
