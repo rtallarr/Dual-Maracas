@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { GetStatsService } from '../../services/get-stats.service';
 
@@ -39,6 +40,7 @@ import { Quest } from '../../models/slayer.type';
 export class AccountSettingsComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
+  private _snackBar = inject(MatSnackBar);
   private readonly _user = inject(GetStatsService);
 
   @Input() zoneName: string = '';
@@ -130,6 +132,9 @@ export class AccountSettingsComponent implements OnInit {
   
     if (!username) {
       console.warn("Username is empty or invalid.");
+      this._snackBar.open("Username is empty or invalid.", "Dismiss", {
+        duration: 2500,
+      });
       return;
     }
   
@@ -167,6 +172,9 @@ export class AccountSettingsComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error fetching stats:", error);
+        this._snackBar.open("Error fetching stats.", "Close", {
+          duration: 2500,
+        });
       },
       complete: () => {
       },
