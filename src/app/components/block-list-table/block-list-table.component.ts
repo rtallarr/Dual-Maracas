@@ -52,57 +52,115 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
     {name: 'Ankou', slayer: 1, combat: 40, unlockable: false, quests: []},
     {name: 'Araxytes', slayer: 92, combat: 1, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Aviansies', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Bandits', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Banshees', slayer: 15, combat: 20, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Basilisks', slayer: 40, combat: 1, unlockable: true, quests: []},
     {name: 'Bats', slayer: 1, combat: 5, unlockable: false, quests: []},
     {name: 'Bears', slayer: 1, combat: 13, unlockable: false, quests: []},
+    {name: 'Birds', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Black demons', slayer: 1, combat: 80, unlockable: false, quests: []},
     {name: 'Black dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Black Knights', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Bloodvelds', slayer: 50, combat: 50, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Blue dragons', slayer: 1, combat: 65, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Boss', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Brine rats', slayer: 47, combat: 45, unlockable: false, quests: ['Olaf\'s Quest']},
     {name: 'Bronze dragons', slayer: 1, combat: 75, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Catablepon', slayer: 1, combat: 35, unlockable: false, quests: []},
+    {name: 'Cave bugs', slayer: 7, combat: 1, unlockable: false, quests: []},
+    {name: 'Cave crawlers', slayer: 10, combat: 10, unlockable: false, quests: []},
     {name: 'Cave horrors', slayer: 58, combat: 85, unlockable: false, quests: ['Cabin Fever']},
+    {name: 'Cave slimes', slayer: 17, combat: 15, unlockable: false, quests: []},
     {name: 'Cave kraken', slayer: 87, combat: 80, unlockable: false, quests: []},
+    {name: 'Chaos druids', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Cockatrice', slayer: 25, combat: 25, unlockable: false, quests: []},
+    {name: 'Cows', slayer: 1, combat: 5, unlockable: false, quests: []},
+    {name: 'Crawling hands', slayer: 5, combat: 1, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Crocodiles', slayer: 1, combat: 50, unlockable: false, quests: []},
     {name: 'Dagannoth', slayer: 1, combat: 75, unlockable: false, quests: ['Horror from the Deep']},
     {name: 'Dark beasts', slayer: 90, combat: 90, unlockable: false, quests: ['Mourning\'s End Part II']},
+    {name: 'Dark warriors', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Dogs', slayer: 1, combat: 15, unlockable: false, quests: []},  
     {name: 'Drakes', slayer: 84, combat: 1, unlockable: false, quests: []},
     {name: 'Dust devils', slayer: 65, combat: 70, unlockable: false, quests: ['Desert Treasure I']},
+    {name: 'Dwarves', slayer: 1, combat: 6, unlockable: false, quests: []},
+    {name: 'Earth warriors', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Elves', slayer: 1, combat: 70, unlockable: false, quests: ['Regicide']},
+    {name: 'Ents', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Fever spiders', slayer: 42, combat: 40, unlockable: false, quests: ['Rum Deal']},
     {name: 'Fire giants', slayer: 1, combat: 65, unlockable: false, quests: []},
+    {name: 'Flesh crawlers', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Fossil Island Wyverns', slayer: 66, combat: 60, unlockable: false, quests: ['Bone Voyage', 'Elemental Workshop I']},
     {name: 'Gargoyles', slayer: 75, combat: 80, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Ghosts', slayer: 1, combat: 13, unlockable: false, quests: []},
+    {name: 'Ghouls', slayer: 1, combat: 25, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Goblins', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Greater demons', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Green dragons', slayer: 1, combat: 65, unlockable: false, quests: ['Dragon Slayer I']},
+    {name: 'Harpie bug swarms', slayer: 33, combat: 33, unlockable: false, quests: []},
     {name: 'Hellhounds', slayer: 1, combat: 75, unlockable: false, quests: []},
+    {name: 'Hill giants', slayer: 1, combat: 25, unlockable: false, quests: []},
+    {name: 'Hobgoblins', slayer: 1, combat: 20, unlockable: false, quests: []},
     {name: 'Hydras', slayer: 95, combat: 1, unlockable: false, quests: []},
+    {name: 'Icefiends', slayer: 1, combat: 20, unlockable: false, quests: []},
+    {name: 'Ice giants', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Ice warriors', slayer: 1, combat: 45, unlockable: false, quests: []},
+    {name: 'Infernal mages', slayer: 45, combat: 40, unlockable: false, quests: ['Priest in Peril']},
     {name: 'Iron dragons', slayer: 1, combat: 80, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Jellies', slayer: 52, combat: 57, unlockable: false, quests: []},
     {name: 'Jungle horrors', slayer: 1, combat: 65, unlockable: false, quests: ['Cabin Fever']},
     {name: 'Kalphites', slayer: 1, combat: 15, unlockable: false, quests: []},
+    {name: 'Killerwatts', slayer: 37, combat: 37, unlockable: false, quests: []},
     {name: 'Kurasks', slayer: 70, combat: 65, unlockable: false, quests: []},
+    {name: 'Lava dragons', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Lesser demons', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Lesser Nagua', slayer: 48, combat: 1, unlockable: false, quests: []},
     {name: 'Lizardmen', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'lizards', slayer: 22, combat: 1, unlockable: false, quests: []},
+    {name: 'Magic axes', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Mammoth', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Minions of Scabaras', slayer: 1, combat: 85, unlockable: false, quests: ['Contact!']},
     {name: 'Mithril dragons', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Mogres', slayer: 32, combat: 1, unlockable: false, quests: []},
+    {name: 'Molanisks', slayer: 39, combat: 50, unlockable: false, quests: []},
+    {name: 'Monkeys', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Moss giants', slayer: 1, combat: 40, unlockable: false, quests: []},
     {name: 'Mutated Zygomites', slayer: 57, combat: 60, unlockable: false, quests: ['Lost City']},
     {name: 'Nechryael', slayer: 80, combat: 85, unlockable: false, quests: ['Priest in Peril']},
+    {name: 'Ogres', slayer: 1, combat: 40, unlockable: false, quests: []},
+    {name: 'Otherworldly beings', slayer: 1, combat: 40, unlockable: true, quests: ['Lost City']},
+    {name: 'Pirates', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Pyrefiends', slayer: 30, combat: 25, unlockable: false, quests: []},
+    {name: 'Rats', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Red dragons', slayer: 1, combat: 68, unlockable: true, quests: ['Dragon Slayer I']},
+    {name: 'Revenants', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Rockslugs', slayer: 20, combat: 20, unlockable: false, quests: []},
+    {name: 'Rogue', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Rune dragons', slayer: 1, combat: 1, unlockable: false, quests: ['Dragon Slayer II']},
+    {name: 'Scorpions', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Sea snakes', slayer: 40, combat: 50, unlockable: false, quests: ['Royal Trouble']},
+    {name: 'Shades', slayer: 1, combat: 30, unlockable: false, quests: []},
     {name: 'Shadow warriors', slayer: 1, combat: 60, unlockable: false, quests: ['Legends\' Quest']},
     {name: 'Skeletal wyverns', slayer: 72, combat: 70, unlockable: false, quests: ['Elemental Workshop I']},
+    {name: 'Skeletons', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Smoke devils', slayer: 93, combat: 85, unlockable: false, quests: []},
+    {name: 'Sourhogs', slayer: 1, combat: 1, unlockable: false, quests: ['A Porcine of Interest']},
+    {name: 'Spiders', slayer: 1, combat: 1, unlockable: false, quests: []},
     {name: 'Spiritual creatures', slayer: 63, combat: 60, unlockable: false, quests: ['Death Plateau']},
     {name: 'Steel dragons', slayer: 1, combat: 85, unlockable: false, quests: ['Dragon Slayer I']},
     {name: 'Suqahs', slayer: 1, combat: 85, unlockable: false, quests: ['Lunar Diplomacy']},
+    {name: 'Terror dogs', slayer: 40, combat: 60, unlockable: false, quests: ['Haunted Mine']},
     {name: 'Trolls', slayer: 1, combat: 60, unlockable: false, quests: []},
     {name: 'Turoth', slayer: 55, combat: 60, unlockable: false, quests: []},
     {name: 'TzHaar', slayer: 1, combat: 1, unlockable: true, quests: []},
-    {name: 'Vampyres', slayer: 1, combat: 1, unlockable: true, quests: []},
+    {name: 'Vampyres', slayer: 1, combat: 35, unlockable: true, quests: ['Priest in Peril']},
+    {name: 'Wall beasts', slayer: 35, combat: 30, unlockable: false, quests: []},
     {name: 'Warped creatures', slayer: 1, combat: 1, unlockable: true, quests: []},
     {name: 'Waterfiends', slayer: 1, combat: 75, unlockable: false, quests: []},
-    {name: 'Wyrms', slayer: 62, combat: 1, unlockable: false, quests: []}
+    {name: 'Werewolves', slayer: 1, combat: 1, unlockable: false, quests: []},
+    {name: 'Wolves', slayer: 1, combat: 20, unlockable: false, quests: []},
+    {name: 'Wyrms', slayer: 62, combat: 1, unlockable: false, quests: []},
+    {name: 'Zombies', slayer: 1, combat: 10, unlockable: false, quests: []}
   ];
 
   private _snackBar = inject(MatSnackBar);
@@ -111,6 +169,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   @Input() Tasks: TaskData[] = [];
   @Input() averagePoints: number = 0;
   @Input() userLevels: any = {};
+  @Input() masterName: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -151,12 +210,12 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
       this.dataSource = new MatTableDataSource(this.Tasks);
       this.dataSource.sort = this.sort;
 
-      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
+      this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
     }
 
     if (changes['quests'] || changes['userLevels']) {
       //console.log("Changes detected");
-      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
+      this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
       //this.printLvls();
     }
 
@@ -177,7 +236,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
     this.calculateWeights();
     this.totalWeight = this.activeWeight + this.blockedWeight + this.lockedWeight + this.skipWeight;
     
-    this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
+    this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
   }
 
   ngAfterViewInit() {
@@ -255,12 +314,11 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
 
     this.Tasks.forEach(task => {
       let taskReq = this.Tasksreqs.find(req => req.name === task.name);
-
       let questsCompleted = taskReq?.quests.length === 0 ||
       taskReq?.quests.every(quest =>
         this.quests.find((q: { name: string; completed: boolean }) => q.name === quest)?.completed //true if quests reqs are met
       );
-
+      
       if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
         task.statusControl?.setValue('Locked');
       } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 

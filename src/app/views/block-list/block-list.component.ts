@@ -30,7 +30,7 @@ export class BlockListComponent implements OnInit {
     {id: '2', name: 'Abyssal Demon', weight: 12},
     {id: '3', name: 'Adamant dragons', weight: 2},
     {id: '4', name: 'Ankou', weight: 5},
-    {id: '45', name: 'Araxytes', weight: 10},
+    {id: '46', name: 'Araxytes', weight: 10},
     {id: '5', name: 'Aviansies', weight: 8},
     {id: '6', name: 'Basilisks', weight: 7},
     {id: '7', name: 'Black demons', weight: 8},
@@ -65,7 +65,7 @@ export class BlockListComponent implements OnInit {
     {id: '37', name: 'Steel dragons', weight: 7},
     {id: '38', name: 'Suqahs', weight: 8},
     {id: '39', name: 'Trolls', weight: 6},
-    {id: '40', name: 'TzHaar', weight: 10},
+    {id: '74', name: 'TzHaar', weight: 10},
     {id: '41', name: 'Vampyres', weight: 8},
     {id: '42', name: 'Warped creatures', weight: 8},
     {id: '43', name: 'Waterfiends', weight: 2},
@@ -98,10 +98,10 @@ export class BlockListComponent implements OnInit {
     {id: '24', name: 'Hellhounds', weight: 8},
     {id: '45', name: 'Hydras', weight: 10},
     {id: '25', name: 'Iron dragons', weight: 5},
-    {id: '38', name: 'Jellies', weight: 6},
+    {id: '71', name: 'Jellies', weight: 6},
     {id: '26', name: 'Kalphites', weight: 9},
     {id: '27', name: 'Kurasks', weight: 3},
-    {id: '36', name: 'Lesser Nagua', weight: 2},
+    {id: '72', name: 'Lesser Nagua', weight: 2},
     {id: '28', name: 'Lizardmen', weight: 8},
     {id: '29', name: 'Mithril dragons', weight: 5},
     {id: '30', name: 'Mutated Zygomites', weight: 2},
@@ -112,7 +112,7 @@ export class BlockListComponent implements OnInit {
     {id: '35', name: 'Smoke devils', weight: 7},
     {id: '37', name: 'Steel dragons', weight: 5},
     {id: '39', name: 'Trolls', weight: 6},
-    {id: '40', name: 'Turoth', weight: 3},
+    {id: '70', name: 'Turoth', weight: 3},
     {id: '41', name: 'Vampyres', weight: 4},
     {id: '42', name: 'Warped creatures', weight: 4},
     {id: '43', name: 'Waterfiends', weight: 2},
@@ -149,23 +149,23 @@ export class BlockListComponent implements OnInit {
     {id: '26', name: 'Kalphites', weight: 9},
     {id: '27', name: 'Kurasks', weight: 3},
     {id: '28', name: 'Lizardmen', weight: 8},
-    {id: '29', name: 'Minions of Scabaras', weight: 4},
-    {id: '30', name: 'Mithril dragons', weight: 5},
-    {id: '31', name: 'Mutated Zygomites', weight: 2},
-    {id: '32', name: 'Nechryael', weight: 7},
-    {id: '33', name: 'Red dragons', weight: 5},
-    {id: '34', name: 'Rune dragons', weight: 2},
-    {id: '35', name: 'Skeletal wyverns', weight: 5},
-    {id: '36', name: 'Smoke devils', weight: 7},
-    {id: '37', name: 'Spiritual creatures', weight: 6},
-    {id: '38', name: 'Steel dragons', weight: 5},
-    {id: '39', name: 'Suqahs', weight: 8},
-    {id: '40', name: 'Trolls', weight: 6},
-    {id: '41', name: 'Turoth', weight: 3},
-    {id: '42', name: 'TzHaar', weight: 10},
-    {id: '43', name: 'Vampyres', weight: 6},
-    {id: '44', name: 'Warped creatures', weight: 6},
-    {id: '45', name: 'Wyrms', weight: 7}
+    {id: '73', name: 'Minions of Scabaras', weight: 4},
+    {id: '29', name: 'Mithril dragons', weight: 5},
+    {id: '30', name: 'Mutated Zygomites', weight: 2},
+    {id: '31', name: 'Nechryael', weight: 7},
+    {id: '32', name: 'Red dragons', weight: 5},
+    {id: '33', name: 'Rune dragons', weight: 2},
+    {id: '34', name: 'Skeletal wyverns', weight: 5},
+    {id: '35', name: 'Smoke devils', weight: 7},
+    {id: '36', name: 'Spiritual creatures', weight: 6},
+    {id: '37', name: 'Steel dragons', weight: 5},
+    {id: '38', name: 'Suqahs', weight: 8},
+    {id: '39', name: 'Trolls', weight: 6},
+    {id: '70', name: 'Turoth', weight: 3},
+    {id: '74', name: 'TzHaar', weight: 10},
+    {id: '41', name: 'Vampyres', weight: 6},
+    {id: '42', name: 'Warped creatures', weight: 6},
+    {id: '44', name: 'Wyrms', weight: 7}
   ];
 
   ChaeldarTasks: TaskData[] = [
@@ -208,12 +208,52 @@ export class BlockListComponent implements OnInit {
     {id: '37', name: 'Steel dragons', weight: 7},
     {id: '38', name: 'Suqahs', weight: 8},
     {id: '39', name: 'Trolls', weight: 6},
-    {id: '40', name: 'Turoth', weight: 3},
+    {id: '70', name: 'Turoth', weight: 3},
     {id: '41', name: 'Vampyres', weight: 6},
     {id: '42', name: 'Warped creatures', weight: 6},
     {id: '43', name: 'Waterfiends', weight: 2},
     {id: '44', name: 'Wyrms', weight: 7}
   ];
+
+  KrystiliaTasks: TaskData[] = [
+    {id: '2', name: 'Abyssal Demon', weight: 5},
+    {id: '4', name: 'Ankou', weight: 6},
+    {id: '5', name: 'Aviansies', weight: 7},
+    {id: '47', name: 'Bandits', weight: 4},
+    {id: '48', name: 'Bears', weight: 6},
+    {id: '7', name: 'Black demons', weight: 7},
+    {id: '8', name: 'Black dragons', weight: 4},
+    {id: '49', name: 'Black Knights', weight: 3},
+    {id: '9', name: 'Bloodvelds', weight: 4},
+    {id: '50', name: 'Chaos druids', weight: 5},
+    {id: '51', name: 'Dark warriors', weight: 4},
+    {id: '18', name: 'Dust devils', weight: 5},
+    {id: '52', name: 'Earth warriors', weight: 6},
+    {id: '53', name: 'Ents', weight: 5},
+    {id: '20', name: 'Fire giants', weight: 7},
+    {id: '23', name: 'Greater demons', weight: 8},
+    {id: '56', name: 'Green dragons', weight: 4},
+    {id: '24', name: 'Hellhounds', weight: 7},
+    {id: '57', name: 'Hill giants', weight: 3},
+    {id: '58', name: 'Ice giants', weight: 6},
+    {id: '59', name: 'Ice warriors', weight: 7},
+    {id: '71', name: 'Jellies', weight: 5},
+    {id: '60', name: 'Lava dragons', weight: 3},
+    {id: '61', name: 'Lesser demons', weight: 6},
+    {id: '62', name: 'Magic axes', weight: 7},
+    {id: '63', name: 'Mammoths', weight: 6},
+    {id: '64', name: 'Moss giants', weight: 4},
+    {id: '31', name: 'Nechryael', weight: 5},
+    {id: '65', name: 'Pirates', weight: 3},
+    {id: '66', name: 'Revenants', weight: 5},
+    {id: '67', name: 'Rogues', weight: 5},
+    {id: '68', name: 'Scorpions', weight: 6},
+    {id: '69', name: 'Skeletons', weight: 5},
+    {id: '70', name: 'Spiders', weight: 6},
+    {id: '36', name: 'Spiritual creatures', weight: 6},
+    {id: '75', name: 'Zombies', weight: 3},
+    {id: '11', name: 'Boss', weight: 8}
+  ]
 
   //points: every 1, 10, 50, 100, 250, 1000 tasks
   slayerMasters: SlayerMaster[] = [
@@ -254,10 +294,20 @@ export class BlockListComponent implements OnInit {
       points: {
         'normal': [10, 50, 150, 250, 350, 500]
       }
+    },
+    {
+      id: 4,
+      name: "Krystilia",
+      tasks: this.KrystiliaTasks,
+      zone: "Wilderness",
+      points: {
+        'normal': [25, 125, 375, 625, 875, 1250]
+      }
     }
   ];
 
   selectedTab: number = 0;
+  selectedMasterName: string = this.slayerMasters[this.selectedTab].name;
   selectedTasks: TaskData[] = this.DuradelTasks;
   quests: Quest[] = [];
   averagePoints: number = 0;
@@ -337,6 +387,7 @@ export class BlockListComponent implements OnInit {
 
   onTabChanged(index: number) {
     this.selectedTab = index;
+    this.selectedMasterName = this.slayerMasters[index].name;
     let masterPoints = this.slayerMasters[this.selectedTab].points;
     //console.log('term', 'konarSwap:', this.pointsFormData.konarSwap, this.pointsFormData.term, 'masterPoints:', masterPoints );
     this.averagePoints = this.calcPoints(

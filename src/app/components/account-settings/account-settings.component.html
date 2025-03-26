@@ -110,7 +110,7 @@
                         </mat-checkbox>
                     </mat-card-content>
                 </mat-card>
-                <mat-card appearance="outlined" class="inner-card">
+                <mat-card appearance="outlined" class="inner-card" *ngIf="zoneName!='Wilderness'">
                     <mat-card-content class="konar-options">
                         <mat-checkbox formControlName="kourendDiary" color="primary">Kourend & Kebos elite diary</mat-checkbox>
                         <mat-form-field style="flex: 1 1 auto;" *ngIf="zoneName!='Kourend & Kebos'">
