@@ -308,7 +308,7 @@ export class BlockListComponent implements OnInit {
     } else {
       basePoints = WesternDiary && masterPoints.diary ? masterPoints.diary : masterPoints.normal;
     }
-    
+
     const konarPoints = kourendDiary && this.slayerMasters[1].points.diary ? this.slayerMasters[1].points.diary : this.slayerMasters[1].points.normal;
 
     let source = basePoints.slice();
@@ -325,8 +325,8 @@ export class BlockListComponent implements OnInit {
       source = basePoints.slice();
     }
 
-    console.log(basePoints, 'baseSource');
-    console.log(source, 'source');
+    //console.log(basePoints, 'baseSource');
+    //console.log(source, 'source');
   
     const points = multipliers[term].reduce((sum, multiplier, index) => {
       return sum + (source[index]) * multiplier;
