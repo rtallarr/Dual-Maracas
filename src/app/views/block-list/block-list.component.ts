@@ -320,8 +320,8 @@ export class BlockListComponent implements OnInit {
   };
 
   levelsData: any = {
-    combat: 3,
-    slayer: 1,
+    combatLvl: 3,
+    slayerLvl: 1,
     magic: 1
   };
 

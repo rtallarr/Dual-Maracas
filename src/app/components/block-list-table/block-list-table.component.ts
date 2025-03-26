@@ -210,12 +210,12 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
       this.dataSource = new MatTableDataSource(this.Tasks);
       this.dataSource.sort = this.sort;
 
-      this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
+      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
     }
 
     if (changes['quests'] || changes['userLevels']) {
       //console.log("Changes detected");
-      this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
+      this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
       //this.printLvls();
     }
 
@@ -236,7 +236,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
     this.calculateWeights();
     this.totalWeight = this.activeWeight + this.blockedWeight + this.lockedWeight + this.skipWeight;
     
-    this.checkLockedTasks(this.userLevels.combat, this.userLevels.slayer);
+    this.checkLockedTasks(this.userLevels.combatLvl, this.userLevels.slayerLvl);
   }
 
   ngAfterViewInit() {
@@ -307,6 +307,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   }
 
   checkLockedTasks(combat: number, slayer: number) {
+    console.log('levels: ', combat, slayer);
     if (!this.quests) {
       console.error('No quests data available');
       return;
