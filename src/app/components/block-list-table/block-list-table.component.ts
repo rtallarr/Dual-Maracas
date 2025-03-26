@@ -203,7 +203,7 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
         this.countSkipTasks--;
       }
       if (this.tasksBlocked > 7) {
-        this._snackBar.open('You have more than 6 tasks blocked!', 'Close', {
+        this._snackBar.open('You have more than 7 tasks blocked!', 'Close', {
           duration: 2500
         });
       }
