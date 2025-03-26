@@ -307,7 +307,6 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
   }
 
   checkLockedTasks(combat: number, slayer: number) {
-    console.log('levels: ', combat, slayer);
     if (!this.quests) {
       console.error('No quests data available');
       return;
@@ -319,11 +318,21 @@ export class BlockListTableComponent implements OnInit, AfterViewInit, OnChanges
       taskReq?.quests.every(quest =>
         this.quests.find((q: { name: string; completed: boolean }) => q.name === quest)?.completed //true if quests reqs are met
       );
-      
-      if (taskReq && (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted)) {
-        task.statusControl?.setValue('Locked');
-      } else if (taskReq && (taskReq.combat <= combat && taskReq.slayer <= slayer) && (task.statusControl?.value === 'Locked' && !taskReq.unlockable)) { 
-        task.statusControl?.setValue('Active');
+
+      if (taskReq) {
+        if (this.masterName === 'Krystilia') {
+          if (taskReq.slayer > slayer || !questsCompleted) {
+            task.statusControl?.setValue('Locked');
+          } else if (taskReq.slayer <= slayer && task.statusControl?.value === 'Locked' && !taskReq.unlockable) {
+            task.statusControl?.setValue('Active');
+          }
+        } else {
+          if (taskReq.combat > combat || taskReq.slayer > slayer || !questsCompleted) {
+            task.statusControl?.setValue('Locked');
+          } else if (taskReq.combat <= combat && taskReq.slayer <= slayer && task.statusControl?.value === 'Locked' && !taskReq.unlockable) {
+            task.statusControl?.setValue('Active');
+          }
+        }
       }
     });
     this.calculateWeights();
