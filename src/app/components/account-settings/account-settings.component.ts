@@ -100,7 +100,7 @@ export class AccountSettingsComponent implements OnInit {
   ngOnInit() {
     const savedQuests = localStorage.getItem('quests');
     const savedLevels = localStorage.getItem('levels');
-    const savedDiaries = localStorage.getItem('diaries');
+    const savedPointConfig = localStorage.getItem('pointsConfig');
 
     if (savedQuests) {
       this.questList.quests = JSON.parse(savedQuests);
@@ -111,19 +111,20 @@ export class AccountSettingsComponent implements OnInit {
       this.reqsForm.patchValue(JSON.parse(savedLevels));
       this.levelsUpdated.emit(this.reqsForm.value);
     }
-    if (savedDiaries) {
-      this.pointsForm.patchValue(JSON.parse(savedDiaries));
+    if (savedPointConfig) {
+      this.pointsForm.patchValue(JSON.parse(savedPointConfig));
       this.pointsFormUpdated.emit(this.pointsForm.value);
     }
 
     this.pointsForm.valueChanges.subscribe((value) => {
-      //console.log(value);
       this.pointsFormUpdated.emit(value);
+      localStorage.setItem("pointsConfig", JSON.stringify(this.pointsForm.value));
     });
 
     this.reqsForm.valueChanges.subscribe((value) => {
       //console.log(value);
       this.levelsUpdated.emit(value);
+      localStorage.setItem("levels", JSON.stringify(this.reqsForm.value));
     });
   }
 
@@ -158,12 +159,6 @@ export class AccountSettingsComponent implements OnInit {
         this.questList.quests.forEach(quest => {
           quest.completed = data.quests[quest.name] === 2;
         });
-
-        localStorage.setItem("levels", JSON.stringify(this.reqsForm.value));
-        localStorage.setItem("diaries", JSON.stringify({
-          'WesternDiary': this.pointsForm.value.WesternDiary,
-          'kourendDiary': this.pointsForm.value.kourendDiary,
-        }));
 
         this.updateAllComplete();
       },
